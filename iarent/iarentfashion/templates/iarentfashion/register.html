@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - IA Rent Fashion</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        :root { --primary: #f85a87; --primary-dark: #fb97b3; --secondary: #ff9db9; --dark: #1a1a2e; }
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-container { max-width: 550px; width: 100%; background: white; border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden; animation: slideUp 0.6s ease; margin: 30px auto; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .auth-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 40px 30px; text-align: center; color: white; }
+        .auth-header h2 { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+        .auth-body { padding: 40px 30px; }
+        .form-control { border-radius: 15px; border: 2px solid #e8ecf4; padding: 12px 18px; font-size: 0.95rem; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(248,90,135,0.15); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 15px; padding: 14px; font-weight: 700; width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(248,90,135,0.3); }
+        .back-home { position: absolute; top: 20px; left: 20px; z-index: 100; }
+        .back-home a { display: flex; align-items: center; gap: 8px; color: var(--dark); text-decoration: none; font-weight: 600; padding: 10px 20px; background: white; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .back-home a:hover { transform: translateX(-5px); }
+        .alert { border-radius: 15px; border: none; padding: 12px 18px; margin-bottom: 1rem; }
+        .password-strength { height: 5px; border-radius: 5px; margin-top: 8px; transition: all 0.3s ease; }
+        .password-strength.weak { width: 33%; background-color: #dc3545; }
+        .password-strength.medium { width: 66%; background-color: #ffc107; }
+        .password-strength.strong { width: 100%; background-color: #28a745; }
+        .password-requirements { font-size: 0.8rem; color: #6c757d; margin-top: 8px; }
+        .password-requirements li { list-style: none; padding-left: 20px; position: relative; }
+        .password-requirements li::before { content: 'X'; position: absolute; left: 0; color: #dc3545; }
+        .password-requirements li.valid::before { content: 'Check'; color: #28a745; }
+        @media (max-width: 576px) { .auth-container { border-radius: 20px; } .auth-header { padding: 30px 20px; } .auth-body { padding: 30px 20px; } .back-home { position: static; margin-bottom: 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="back-home">
+        <a href="{% url 'beranda' %}">
+            Kembali ke Beranda
+        </a>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Daftar Sekarang!</h2>
+            <p>Bergabung dengan IA Rent Fashion sekarang</p>
+        </div>
+
+        <div class="auth-body">
+
+            <!-- PESAN SUKSES → LANGSUNG KE LOGIN! -->
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'success' in message.tags %}
+                        <div class="alert alert-success text-center shadow-sm mb-4" role="alert">
+                            <i class="bi bi-check-circle-fill me-2 fs-4"></i>
+                            <strong>Selamat!</strong> {{ message }}
+                        </div>
+                        <script>
+                            setTimeout(() => {
+                                window.location.href = "{% url 'login' %}";
+                            }, 2000);
+                        </script>
+                    {% elif 'error' in message.tags %}
+                        <div class="alert alert-danger text-center shadow-sm mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <strong>Gagal!</strong> {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <!-- FORM DAFTAR -->
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label>Nama Lengkap</label>
+                    <input type="text" name="full_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Nomor Telepon (Opsional)</label>
+                    <input type="text" name="phone" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Daftar Sekarang</button>
+            </form>
+        </div>
+
+        <div class="text-center py-4">
+            Sudah punya akun? 
+            <a href="{% url 'login' %}">Masuk di sini</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle Password
+        document.getElementById('togglePassword1')?.addEventListener('click', function() {
+            const input = document.getElementById('password1');
+            const type = input.type === 'password' ? 'text' : 'password';
+            input.type = type;
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+        document.getElementById('togglePassword2')?.addEventListener('click', function() {
+            const input = document.getElementById('password2');
+            const type = input.type === 'password' ? 'text' : 'password';
+            input.type = type;
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+        // Password Strength
+        const passwordInput = document.getElementById('password1');
+        const strengthBar = document.getElementById('passwordStrength');
+        const reqs = {
+            length: document.getElementById('req-length'),
+            uppercase: document.getElementById('req-uppercase'),
+            lowercase: document.getElementById('req-lowercase'),
+            number: document.getElementById('req-number')
+        };
+
+        passwordInput.addEventListener('input', function() {
+            const val = this.value;
+            let strength = 0;
+            reqs.length.classList.toggle('valid', val.length >= 8); if (val.length >= 8) strength++;
+            reqs.uppercase.classList.toggle('valid', /[A-Z]/.test(val)); if (/[A-Z]/.test(val)) strength++;
+            reqs.lowercase.classList.toggle('valid', /[a-z]/.test(val)); if (/[a-z]/.test(val)) strength++;
+            reqs.number.classList.toggle('valid', /[0-9]/.test(val)); if (/[0-9]/.test(val)) strength++;
+
+            strengthBar.className = 'password-strength';
+            if (strength <= 2) strengthBar.classList.add('weak');
+            else if (strength === 3) strengthBar.classList.add('medium');
+            else if (strength === 4) strengthBar.classList.add('strong');
+        });
+    </script>
+</body>
+</html>

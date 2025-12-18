@@ -1,0 +1,859 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Rent Fashion - Sewa</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/sewa.css' %}">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+   <header id="header" class="site-header">
+        <nav class="navbar navbar-expand-lg py-3 border-bottom bg-white shadow-sm fixed-top">
+            <div class="container position-relative">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="{% url 'beranda' %}">
+                    <img src="{% static 'images/main-logo.png' %}" alt="IA Rent Fashion Logo" style="height: 80px;">
+                </a>
+
+                <!-- TOGGLER -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- MENU TENGAH (DESKTOP) -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto text-uppercase fw-semibold gap-4">
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">Koleksi</a>
+                            <ul class="dropdown-menu border-0 shadow active">
+                                <li><a class="dropdown-item" href="{% url 'koleksi' %}">SEMUA KOLEKSI</a></li>
+                                <li><a class="dropdown-item" href="{% url 'jas' %}">Jas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dress' %}">Dress</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                                <li><a class="dropdown-item" href="{% url 'kebaya' %}">Kebaya</a></li>
+                                <li><a class="dropdown-item" href="{% url 'footwear' %}">Footwear</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'review' %}">Review</a></li>
+                    </ul>
+                </div>
+
+                <!-- ICON KANAN -->
+                <div class="position-absolute end-0 top-50 translate-middle-y d-flex align-items-center gap-3 pe-4">
+                    <!-- Wishlist -->
+                    <a href="#" class="text-dark position-relative" onclick="event.preventDefault(); addToWishlist(0)">
+                        <i class="bi bi-heart fs-4"></i>
+                        <span id="wishlistCount" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a>
+
+                    <!-- Cart -->
+                    <a href="#" class="text-dark position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="bi bi-bag fs-4"></i>
+                        <span id="cartCount" class="badge bg-warning text-dark rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a>
+
+                    <!-- User Menu -->
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a href="#" class="text-dark dropdown-toggle d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-4"></i>
+                                <span class="ms-2 d-none d-lg-inline fw-medium">{{ user.username|truncatechars:12 }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width: 200px;">
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'profile' %}">
+                                        <i class="bi bi-person-circle text-primary me-3"></i> Profile Saya
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'pesanan' %}">
+                                        <i class="bi bi-bag-check text-warning me-3"></i> Pesanan Saya
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="#">
+                                        <i class="bi bi-heart text-danger me-3"></i> Favorit Saya
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded text-danger fw-medium" href="{% url 'logout' %}">
+                                        <i class="bi bi-box-arrow-right me-3"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm rounded-pill px-3">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-sm rounded-pill px-3">Daftar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- OFFCANVAS MOBILE -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold">IA Rent Fashion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-4">
+                <ul class="navbar-nav mx-auto flex-column text-center gap-4">
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link fs-5 text-dark dropdown-toggle" data-bs-toggle="dropdown" href="#">Koleksi</a>
+                        <ul class="dropdown-menu w-100 text-center shadow">
+                            <li><a class="dropdown-item py-2" href="{% url 'jas' %}">Jas</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'dress' %}">Dress</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'kebaya' %}">Kebaya</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'footwear' %}">Footwear</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'review' %}">Review</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL KERANJANG -->
+    <div class="modal fade" id="cartModal" tabberanda="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header border-bottom-0">
+            <h5 class="modal-title fw-bold">Keranjang Belanja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div id="cart-content"></div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fw-semibold">Total Items:</span>
+                <span class="fw-bold" id="cart-total-items">0 items</span>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-dark rounded-pill" onclick="continueShopping()">Lanjut Belanja</button>
+                <button class="btn btn-primary rounded-pill" onclick="checkout()">Checkout Sekarang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="checkout-page">
+        <div class="breadcrumb">
+            <a href="{% url 'beranda' %}">Home</a> / <a href="#" class="active">Checkout</a>
+        </div>
+        <h1>Checkout Penyewaan</h1>
+
+        <div class="checkout-container">
+            <div class="checkout-form-section">
+                <!-- STEPPER -->
+                <div class="checkout-stepper">
+                    <div class="step active" data-step="1"><div class="circle">1</div><div class="label">Informasi</div></div>
+                    <div class="line"></div>
+                    <div class="step" data-step="2"><div class="circle">2</div><div class="label">Jaminan</div></div>
+                    <div class="line"></div>
+                    <div class="step" data-step="3"><div class="circle">3</div><div class="label">Deposit</div></div>
+                    <div class="line"></div>
+                    <div class="step" data-step="4"><div class="circle">4</div><div class="label">Konfirmasi</div></div>
+                    <div class="line"></div>
+                    <div class="step" data-step="5"><div class="circle">5</div><div class="label">Selesai</div></div>
+                </div>
+
+                <form id="checkoutForm" novalidate>
+                    <!-- STEP 1 -->
+                    <div class="checkout-box" id="step-1-content">
+                        <h3>1. Informasi Pelanggan</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nama Lengkap</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                                <div class="invalid-feedback">Wajib diisi</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                                <div class="invalid-feedback">Email tidak valid</div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Telepon</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                            <div class="invalid-feedback">Wajib diisi</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tanggal Mulai</label>
+                                <input type="date" class="form-control" id="startDate" required>
+                                <div class="invalid-feedback">Wajib diisi</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Tanggal Selesai</label>
+                                <input type="date" class="form-control" id="endDate" required>
+                                <div class="invalid-feedback">Wajib diisi</div>
+                            </div>
+                        </div>
+                        <div class="pickup-info">
+                            <h6>Pengambilan</h6>
+                            <p>Jl. Brigjend H. Hasan Basri, Pangeran, Banjarmasin</p>
+                        </div>
+                        <button type="button" class="continue-button float-end" data-next-step="2">Lanjut</button>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div class="checkout-box hidden" id="step-2-content">
+                        <h3>2. Jaminan Dokumen</h3>
+                        
+                        <!-- SYARAT DAN KETENTUAN -->
+                        <div class="terms-conditions mb-4">
+                            <div class="card border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h6 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Syarat & Ketentuan Penyewaan</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ol class="mb-0 small">
+                                        <li class="mb-2">
+                                            <strong>Pemesanan Online:</strong> Pemesanan dilakukan melalui website dan dianggap sah setelah konfirmasi.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Pembayaran Deposit:</strong> Penyewa wajib membayar deposit sebesar <strong>10%</strong> saat melakukan pemesanan di website, dan bukti pembayaran tersebut harus ditunjukkan saat pengambilan barang di toko.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Identitas:</strong> Saat pengambilan, penyewa juga wajib membawa identitas asli (KTP/SIM/Kartu Pelajar) sebagai jaminan.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Tanggung Jawab:</strong> Penyewa bertanggung jawab penuh atas kerusakan atau kehilangan barang; jika barang rusak, penyewa wajib mengganti sesuai harga dan barang yang rusak menjadi milik penyewa.
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Pemeriksaan Barang:</strong> Setelah barang dikembalikan, pihak toko akan memeriksa kondisi barang maksimal 1×24 jam sebelum deposit dikembalikan.
+                                        </li>
+                                        <li>
+                                            <strong>Keterlambatan:</strong> Jika pengembalian terlambat lebih dari 1×24 jam, penyewa dikenakan denda sebesar 2× lipat dari harga barang yang disewa.
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pickup-info">
+                            <p>Bawa <strong>KTP/SIM/Kartu Pelajar Asli</strong> saat pengambilan.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Upload Foto KTP (Opsional - untuk proses lebih cepat)</label>
+                            <div class="file-upload-box" id="fileUploadDropzone">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <p id="fileUploadText">Klik atau seret file KTP</p>
+                                <input type="file" id="jaminanFile" hidden accept="image/*,.pdf">
+                            </div>
+                            <small class="text-muted">Format: JPG, PNG, PDF (maks. 5MB)</small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn-back-custom" data-prev-step="1">Kembali</button>
+                            <button type="button" class="continue-button" data-next-step="3">Lanjut</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="checkout-box hidden" id="step-3-content">
+                        <h3>3. Bayar Deposit via QRIS</h3>
+                        
+                        <div class="deposit-info">
+                            <h6>Deposit Jaminan (di luar biaya sewa)</h6>
+                            <p class="mb-2"><strong>Deposit ini akan dikembalikan penuh</strong> saat Anda mengembalikan barang dalam kondisi baik.</p>
+                            <hr>
+                            <p class="mb-1"><strong>Total Biaya Sewa:</strong> <span id="totalSewa">Rp 0</span></p>
+                            <p class="mb-1"><strong>Deposit Jaminan (Bayar Sekarang):</strong> <span id="depositAmount" class="text-danger fw-bold">Rp 0</span></p>
+                            <p class="mb-0 text-success"><strong>Total Biaya Sewa (Bayar di Tempat): <span id="totalBayarTempat">Rp 0</span></strong></p>
+                        </div>
+
+                        <div class="qris-payment">
+                            <h5 class="mb-3">Scan QR Code di Bawah</h5>
+                            
+                            <div class="payment-timer alert alert-warning">
+                                <i class="bi bi-clock"></i> 
+                                Selesaikan pembayaran deposit sebesar <strong id="depositBayarQris">Rp 0</strong> dalam: 
+                                <span id="paymentTimer" class="fw-bold">05:00</span>
+                            </div>
+
+                            <div class="qris-code text-center">
+                                <div class="qris-placeholder">
+                                    <img src="{% static 'images/qrissewa.png' %}" alt="QRIS Code Pembayaran" class="qris-image">
+                                    <div class="qris-overlay hidden" id="qrisOverlay">
+                                        <div class="success-checkmark">
+                                            <i class="bi bi-check-circle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="small text-muted mt-2">QR Code akan aktif setelah Anda melanjutkan ke langkah ini</p>
+                            </div>
+
+                            <div class="payment-instruction mt-4">
+                                <h6><i class="bi bi-info-circle"></i> Cara Pembayaran:</h6>
+                                <ol class="small">
+                                    <li>Buka aplikasi e-wallet atau mobile banking Anda</li>
+                                    <li>Pilih fitur Scan QRIS</li>
+                                    <li>Arahkan kamera ke kode QR di atas</li>
+                                    <li>Konfirmasi pembayaran deposit sebesar <strong id="depositAmountText">Rp 0</strong></li>
+                                    <li>Tunggu konfirmasi pembayaran (maksimal 5 menit)</li>
+                                </ol>
+                            </div>
+
+                            <div id="paymentStatus" class="payment-status payment-pending">
+                                <div class="status-content">
+                                    <i class="bi bi-clock"></i> 
+                                    <span class="status-text">Menunggu Pembayaran...</span>
+                                </div>
+                            </div>
+
+                            <div class="simulation-buttons mt-4">
+                                <div class="alert alert-info small">
+                                    <i class="bi bi-lightbulb"></i> <strong>Demo Mode:</strong> Gunakan tombol di bawah untuk simulasi pembayaran
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <button type="button" class="btn btn-success btn-sm" onclick="simulatePaymentSuccess()">
+                                        <i class="bi bi-check-circle"></i> Simulasi Bayar Berhasil
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="simulatePaymentFailed()">
+                                        <i class="bi bi-x-circle"></i> Simulasi Bayar Gagal
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="resetPayment()">
+                                        <i class="bi bi-arrow-clockwise"></i> Reset Pembayaran
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="payment-security mt-4">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-shield-check text-success me-2"></i>
+                                    <p class="small text-muted mb-0">
+                                        Pembayaran diproses secara aman oleh <strong>iPaymu</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn-back-custom" data-prev-step="2">
+                                <i class="bi bi-arrow-left"></i> Kembali
+                            </button>
+                            <button type="button" class="continue-button hidden" id="continueAfterPayment" data-next-step="4">
+                                Lanjut ke Konfirmasi <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4 -->
+                    <div class="checkout-box hidden" id="step-4-content">
+                        <h3>4. Konfirmasi Pesanan</h3>
+                        <div id="confirmDetails" class="mb-4"></div>
+                        
+                        <!-- Ringkasan Syarat & Ketentuan -->
+                        <div class="terms-summary mb-4">
+                            <div class="card border-info">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0"><i class="bi bi-check-circle"></i> Ringkasan Syarat & Ketentuan</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="small mb-0">
+                                        <li>Deposit <strong>10%</strong> telah dibayar via QRIS</li>
+                                        <li>Wajib bawa KTP asli saat pengambilan</li>
+                                        <li>Tanggung jawab penuh atas kerusakan/kehilangan barang</li>
+                                        <li>Pemeriksaan barang maksimal 1×24 jam setelah pengembalian</li>
+                                        <li>Denda 2× lipat harga untuk keterlambatan > 1×24 jam</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                Saya telah membaca dan menyetujui seluruh <strong>Syarat & Ketentuan Sewa</strong> di atas
+                            </label>
+                            <div class="invalid-feedback" id="termsError">Anda harus menyetujui syarat dan ketentuan</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn-back-custom" data-prev-step="3">Kembali</button>
+                            <button type="submit" class="continue-button">Konfirmasi & Selesai</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: STRUK CANTIK - PERBAIKAN -->
+                    <div class="checkout-box text-center hidden" id="step-5-content">
+                        <div class="success-animation">
+                            <i class="bi bi-check-circle-fill success-icon"></i>
+                        </div>
+                        <h3 class="mt-4 text-success">Pesanan Berhasil!</h3>
+                        <p class="lead">Terima kasih telah melakukan pemesanan di IA Rent Fashion</p>
+                        
+                        <div class="alert alert-success mt-3">
+                            <h5><i class="bi bi-check-circle"></i> Pembayaran Deposit Berhasil!</h5>
+                            <p>Struk PDF sedang dipersiapkan untuk diunduh...</p>
+                        </div>
+                        
+                        <!-- Preview Invoice (hidden) -->
+                        <div id="invoicePreview" style="display: none;"></div>
+                        
+                        <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
+                            <a href="{% url 'beranda' %}" class="btn btn-dark btn-lg">
+                                <i class="bi bi-house"></i> Kembali ke Beranda
+                            </a>
+                            <button id="downloadPdfBtn" class="btn btn-success btn-lg">
+                                <i class="bi bi-download"></i> Unduh Struk PDF
+                            </button>
+                            <a href="{% url 'pesanan' %}" class="btn btn-primary btn-lg">
+                                <i class="bi bi-bag-check"></i> Lihat Pesanan Saya
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <h6>Informasi Penting:</h6>
+                            <ul class="list-unstyled small text-start">
+                                <li><i class="bi bi-check text-success"></i> Deposit telah dibayar via QRIS</li>
+                                <li><i class="bi bi-clock text-warning"></i> Bawa KTP asli saat pengambilan barang</li>
+                                <li><i class="bi bi-currency-dollar text-info"></i> Bayar biaya sewa saat mengambil barang</li>
+                                <li><i class="bi bi-arrow-return-left text-primary"></i> Deposit dikembalikan max 1x24 jam setelah pengembalian</li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            {% comment %} <!-- RINGKASAN DENGAN QUANTITY CONTROL -->
+            <div class="order-summary-section">
+                <div class="checkout-box">
+                    <h2>Ringkasan</h2>
+                    <div id="order-list-items">
+                        <!-- Produk akan dimuat secara dinamis oleh JavaScript -->
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Memuat produk...</p>
+                        </div>
+                    </div>
+                    <div id="empty-cart" class="hidden text-center py-4">
+                        <p class="text-muted">Keranjang kosong</p>
+                    </div>
+                    
+                    <!-- INPUT QUANTITY CONTROL -->
+                    <div class="quantity-control">
+                        <label class="fw-bold mb-2">Jumlah Produk:</label>
+                        <div class="quantity-input-group">
+                            <button class="btn btn-sm btn-outline-dark" onclick="decreaseQuantity()">-</button>
+                            <input type="number" id="quantity" value="1" min="1" class="form-control">
+                            <button class="btn btn-sm btn-outline-dark" onclick="increaseQuantity()">+</button>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <div class="summary-line"><span>Biaya Sewa</span><span id="sewaSummary">Rp 0</span></div>
+                    <div class="summary-line"><span>Deposit (10%)</span><span id="depositSummary">Rp 0</span></div>
+                    <hr>
+                    <div class="summary-line total"><strong>BAYAR SAAT AMBIL</strong> <strong id="totalBayar">Rp 0</strong></div>
+                    <p class="small text-success mt-2">Deposit dikembalikan max 1x24 jam</p>
+                </div>
+            </div> {% endcomment %}
+
+            <!-- RINGKASAN PESANAN - PERBAIKAN LENGKAP DENGAN GAMBAR -->
+            <div class="order-summary-section">
+                <div class="checkout-box">
+                    <h2>Ringkasan</h2>
+                    
+                    <div id="order-list-items">
+                        {% if cart_items %}
+                            {% for item in cart_items %}
+                            <div class="order-item mb-3 p-3 border rounded" data-product-id="{{ item.product.id }}">
+                                <div class="row align-items-center">
+                                    <!-- KOLOM GAMBAR PRODUK (KIRI) -->
+                                    <div class="col-4">
+                                        {% if item.product.image %}
+                                            <img src="{{ item.product.image.url }}" 
+                                                alt="{{ item.product.name }}"
+                                                class="img-fluid rounded shadow-sm"
+                                                style="width: 100%; height: 100px; object-fit: cover;"
+                                                onerror="this.onerror=null; this.src='/static/img/no-image.jpg'; console.error('Failed to load:', this.dataset.originalSrc);"
+                                                data-original-src="{{ item.product.image.url }}">
+                                        {% else %}
+                                            <img src="{% static 'img/no-image.jpg' %}" 
+                                                alt="No Image"
+                                                class="img-fluid rounded shadow-sm"
+                                                style="width: 100%; height: 100px; object-fit: cover;">
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- KOLOM INFO PRODUK (KANAN) -->
+                                    <div class="col-8">
+                                        <h6 class="mb-1 fw-bold text-dark">{{ item.product.name }}</h6>
+                                        <p class="mb-1 small text-muted">
+                                            <strong>{{ item.product.category.name|upper }}</strong>
+                                        </p>
+                                        <p class="mb-1 text-muted small">
+                                            Ukuran: <strong>{{ item.size }}</strong> • 
+                                            Qty: <strong>{{ item.quantity }}</strong>
+                                        </p>
+                                        <p class="mb-0 text-primary fw-bold">
+                                            Rp {{ item.product.price|floatformat:0 }}/hari
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div id="empty-cart" class="text-center py-5">
+                                <i class="bi bi-cart-x display-5 text-muted"></i>
+                                <p class="mt-2 text-muted">Keranjang kosong</p>
+                                <p class="small text-muted">Silakan tambahkan produk dari <a href="/">halaman utama</a></p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- GARIS PEMISAH -->
+                    <hr class="my-4">
+                    
+                    <!-- RINGKASAN BIAYA -->
+                    <div class="summary-line d-flex justify-content-between mb-2">
+                        <span>Biaya Sewa</span>
+                        <span id="sewaSummary" class="fw-bold">Rp {{ total_harga|floatformat:0 }}</span>
+                    </div>
+                    
+                    <div class="summary-line d-flex justify-content-between mb-3">
+                        <span>Deposit (10%)</span>
+                        <span id="depositSummary" class="fw-bold">Rp {{ deposit|floatformat:0 }}</span>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <!-- TOTAL BAYAR SAAT AMBIL -->
+                    <div class="summary-line total d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                        <strong class="text-uppercase" style="color: #FF1493;">BAYAR SAAT AMBIL</strong> 
+                        <strong id="totalBayar" class="fs-4" style="color: #FF1493;">
+                            Rp {{ total_bayar|floatformat:0 }}
+                        </strong>
+                    </div>
+                    
+                    <!-- INFO DEPOSIT -->
+                    <div class="alert alert-info mt-3 small">
+                        <i class="bi bi-info-circle"></i> 
+                        <strong>Deposit dikembalikan max 1×24 jam</strong> setelah barang dikembalikan dalam kondisi baik
+                    </div>
+                    
+                    <!-- TOMBOL KONFIRMASI -->
+                    {% if cart_items %}
+                    <button class="btn btn-primary w-100 py-3 fw-bold text-uppercase" 
+                            style="background: #007bff; border: none; font-size: 16px;"
+                            onclick="scrollToStep1()">
+                        <i class="bi bi-check-circle"></i> Konfirmasi Pesanan
+                    </button>
+                    {% else %}
+                    <a href="/" class="btn btn-success w-100 py-3 fw-bold">
+                        <i class="bi bi-shop"></i> Belanja Sekarang
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+   
+    <!-- FOOTER -->
+    <footer id="footer" class="bg-white border-top mt-5">
+      <div class="container py-5">
+        <div class="row gy-4">
+          <div class="col-lg-3 col-sm-6">
+            <img src="{% static 'images/main-logo.png' %}" alt="logo" class="img-fluid mb-3" style="max-width: 200px">
+            <p>Jl. Brigjend H. Hasan Basri, Pangeran, Kec. Banjarmasin Utara, Kota Banjarmasin, Kalimantan Selatan 70123</p>
+            <ul class="d-flex list-unstyled gap-3 mt-3">
+              <li><a href="https://facebook.com" class="text-dark"><i class="bi bi-facebook fs-5"></i></a></li>
+              <li><a href="https://instagram.com" class="text-dark"><i class="bi bi-instagram fs-5"></i></a></li>
+              <li><a href="https://youtube.com" class="text-dark"><i class="bi bi-youtube fs-5"></i></a></li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-sm-6">
+            <h5 class="fw-bold mb-3">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'beranda' %}" class="text-dark text-decoration-none">Beranda</a></li>
+              <li><a href="{% url 'koleksi' %}" class="text-dark text-decoration-none">Koleksi</a></li>
+              <li><a href="{% url 'inspirasi' %}" class="text-dark text-decoration-none">Inspirasi</a></li>
+              <li><a href="{% url 'kontak' %}" class="text-dark text-decoration-none">Kontak</a></li>
+              <li><a href="{% url 'tentang' %}" class="text-dark text-decoration-none">Tentang</a></li>
+              <li><a href="{% url 'review' %}" class="text-dark text-decoration-none">Review</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <h5 class="fw-bold mb-3">Help & Info</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-dark text-decoration-none">Cek Pesanan</a></li>
+              <li><a href="#" class="text-dark text-decoration-none">Kebijakan Pengembalian</a></li>
+              <li><a href="#" class="text-dark text-decoration-none">Hubungi Kami</a></li>
+              <li><a href="#" class="text-dark text-decoration-none">FAQ</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-sm-6">
+            <h5 class="fw-bold mb-3">Contact Us</h5>
+            <p>Ada pertanyaan atau saran? <br><a href="mailto:iarentfashion@gmail.com" class="text-dark text-decoration-underline">iarentfashion@gmail.com</a></p>
+            <p>Butuh bantuan cepat? Hubungi kami: <br><a href="https://wa.me/6281122233344" class="text-dark text-decoration-underline">+62 811-2223-3344</a></p>
+          </div>
+        </div>
+        <div class="border-top mt-4 pt-3 d-flex justify-content-between align-items-center flex-wrap">
+          <div class="d-flex align-items-center gap-3">
+            <p class="mb-0 small fw-semibold">Payment options:</p>
+            <img src="{% static 'images/visa.jpg' %}" alt="Visa" width="40" height="25" class="rounded shadow-sm">
+            <img src="{% static 'images/mastercard.jpg' %}" alt="MasterCard" width="40" height="25" class="rounded shadow-sm">
+            <img src="{% static 'images/paypal.jpg' %}" alt="PayPal" width="40" height="25" class="rounded shadow-sm">
+          </div>
+          <p class="mb-0 small text-secondary">© 2025 IA Rent Fashion. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{% static 'js/sewa.js' %}"></script>
+    
+    <!-- DATA GLOBAL & JS -->
+    <script>
+    // Pastikan window.djangoData selalu ada
+    window.djangoData = window.djangoData || {};
+
+    // Data login & URL
+    window.djangoData.isLoggedIn = {{ user.is_authenticated|yesno:"true,false" }};
+    window.djangoData.csrfToken = "{{ csrf_token }}";
+
+    window.djangoData.urls = {
+        login: "{% url 'login' %}",
+        {% if user.is_authenticated %}
+            apiCartAdd: "{% url 'api_cart_add' %}",
+            apiWishlistAdd: "{% url 'api_wishlist_add' %}",
+            sewa: "{% url 'sewa' %}",
+            clearWelcome: "{% url 'clear_welcome' %}"
+        {% else %}
+            apiCartAdd: null,
+            apiWishlistAdd: null,
+            sewa: null,
+            clearWelcome: null
+        {% endif %}
+    };
+    </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- App JS -->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <!-- WELCOME POPUP SETELAH LOGIN/DAFTAR -->
+    {% if request.session.show_welcome %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Selamat Datang!',
+            text: 'Kamu berhasil masuk ke IA Rent Fashion',
+            timer: 3000,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        }).then(() => {
+            // Hapus flag welcome
+            fetch(window.djangoData.urls.clearWelcome, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': window.djangoData.csrfToken }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    console.log('🖼️ Checking images in ringkasan...');
+    
+    const images = document.querySelectorAll('.order-item img');
+    console.log(`📊 Found ${images.length} images`);
+    
+    images.forEach((img, index) => {
+        const imgData = {
+            index: index + 1,
+            src: img.src,
+            alt: img.alt,
+            originalSrc: img.dataset.originalSrc,
+            naturalWidth: img.naturalWidth,
+            complete: img.complete,
+            loaded: img.complete && img.naturalWidth > 0
+        };
+        
+        console.log(`Image ${index + 1}:`, imgData);
+        
+        // Event listener untuk error
+        img.addEventListener('error', function(e) {
+            console.error(`❌ Failed to load image ${index + 1}:`, {
+                src: this.src,
+                originalSrc: this.dataset.originalSrc
+            });
+        });
+        
+        // Event listener untuk success
+        img.addEventListener('load', function() {
+            console.log(`✅ Image ${index + 1} loaded successfully:`, this.src);
+        });
+    });
+});
+
+    document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Halaman sewa dimuat');
+    
+    // Tunggu app.js siap
+    setTimeout(() => {
+        // Load produk dari berbagai sumber
+        loadProduct();
+        initialize(); // Inisialisasi checkout flow
+        
+        // Set tanggal default
+        const today = new Date().toISOString().split('T')[0];
+        const startDateElem = document.getElementById('startDate');
+        const endDateElem = document.getElementById('endDate');
+        
+        if (startDateElem) {
+            startDateElem.min = today;
+            startDateElem.value = today;
+        }
+        if (endDateElem) {
+            endDateElem.min = today;
+            const defaultEndDate = new Date();
+            defaultEndDate.setDate(defaultEndDate.getDate() + 3);
+            endDateElem.value = defaultEndDate.toISOString().split('T')[0];
+        }
+        
+        // Event listeners untuk update total
+        ['startDate', 'endDate'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('change', updateTotal);
+            }
+        });
+        
+    }, 500); // Beri waktu untuk app.js inisialisasi
+    });
+
+    // Fungsi untuk proses checkout
+    function processCheckout() {
+        // Validasi form
+        const fullName = document.querySelector('input[name="full_name"]')?.value;
+        const email = document.querySelector('input[name="email"]')?.value;
+        const phone = document.querySelector('input[name="phone"]')?.value;
+        const startDate = document.querySelector('input[name="start_date"]')?.value;
+        const endDate = document.querySelector('input[name="end_date"]')?.value;
+        
+        if (!fullName || !email || !phone || !startDate || !endDate) {
+            Swal.fire('Error', 'Harap lengkapi semua data!', 'error');
+            return;
+        }
+        
+        // Prepare data untuk API
+        const checkoutData = {
+            full_name: fullName,
+            email: email,
+            phone: phone,
+            start_date: startDate,
+            end_date: endDate,
+            cart_items: [
+                {% for item in cart_items %}
+                {
+                    product_id: {{ item.product.id }},
+                    name: "{{ item.product.name|escapejs }}",
+                    price: {{ item.product.price }},
+                    quantity: {{ item.quantity }},
+                    size: "{{ item.size|escapejs }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        };
+        
+        // Kirim ke API
+        fetch('/api/create-order/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(checkoutData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('Sukses!', 'Pesanan berhasil dibuat!', 'success')
+                .then(() => {
+                    window.location.href = '/pesanan/';
+                });
+            } else {
+                Swal.fire('Error', data.error || 'Gagal membuat pesanan', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire('Error', 'Terjadi kesalahan sistem', 'error');
+        });
+    }
+
+    // Fungsi quantity control (opsional)
+    function increaseQuantity() {
+        const input = document.getElementById('quantity');
+        input.value = parseInt(input.value) + 1;
+        updateSummary();
+    }
+
+    function decreaseQuantity() {
+        const input = document.getElementById('quantity');
+        if (input.value > 1) {
+            input.value = parseInt(input.value) - 1;
+            updateSummary();
+        }
+    }
+
+    function updateSummary() {
+        // Update summary jika perlu
+    }
+
+    console.log('🖼️ DEBUG GAMBAR:');
+    document.querySelectorAll('.order-item img').forEach((img, idx) => {
+        console.log(`Image ${idx}:`, {
+            src: img.src,
+            alt: img.alt,
+            naturalWidth: img.naturalWidth,
+            complete: img.complete
+        });
+    });
+
+    </script>
+    {% endif %}
+</body>
+</html>

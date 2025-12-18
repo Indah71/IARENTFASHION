@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - IA Rent Fashion</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        :root { --primary: #f85a87; --primary-dark: #fb97b3; --secondary: #ff9db9; --dark: #1a1a2e; }
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-container { max-width: 450px; width: 100%; background: white; border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden; animation: slideUp 0.6s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .auth-header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 40px 30px; text-align: center; color: white; }
+        .auth-header h2 { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+        .auth-body { padding: 40px 30px; }
+        .form-control { border-radius: 15px; border: 2px solid #e8ecf4; padding: 12px 18px; font-size: 0.95rem; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(248,90,135,0.15); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; border-radius: 15px; padding: 14px; font-weight: 700; width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(248,90,135,0.3); }
+        .back-home { position: absolute; top: 20px; left: 20px; z-index: 100; }
+        .back-home a { display: flex; align-items: center; gap: 8px; color: var(--dark); text-decoration: none; font-weight: 600; padding: 10px 20px; background: white; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .back-home a:hover { transform: translateX(-5px); }
+        .alert { border-radius: 15px; border: none; padding: 12px 18px; margin-bottom: 1rem; }
+        @media (max-width: 576px) { .auth-container { border-radius: 20px; } .auth-header { padding: 30px 20px; } .auth-body { padding: 30px 20px; } .back-home { position: static; margin-bottom: 20px; } }
+    </style>
+</head>
+<body>
+
+    <div class="back-home">
+        <a href="{% url 'beranda' %}">
+            Kembali ke Beranda
+        </a>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Selamat Datang!</h2>
+            <p>Masuk ke akun IA Rent Fashion Anda</p>
+        </div>
+
+        <div class="auth-body">
+
+            <!-- MESSAGES — SUDAH AMAN! -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert 
+                        {% if 'error' in message.tags %}alert-danger
+                        {% elif 'success' in message.tags %}alert-success
+                        {% else %}alert-info{% endif %} 
+                        alert-dismissible fade show" role="alert">
+                        <i class="bi bi-
+                            {% if 'error' in message.tags %}exclamation-triangle-fill text-danger
+                            {% elif 'success' in message.tags %}check-circle-fill text-success
+                            {% else %}info-circle-fill text-info{% endif %} 
+                            me-2"></i>
+                        <strong>
+                            {% if 'error' in message.tags %}Gagal!
+                            {% elif 'success' in message.tags %}Sukses!
+                            {% else %}Info{% endif %}
+                        </strong>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Login Form -->
+            <form method="POST" action="{% url 'login' %}" id="loginForm">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Masukkan username" required>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Masukkan password" required>
+                    <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Masuk
+                </button>
+            </form>
+        </div>
+
+        <!-- FOOTER — INI YANG PALING PENTING! -->
+        <div class="text-center py-4">
+            <p class="mb-2 text-muted">Belum punya akun?</p>
+            <a href="{% url 'register' %}" class="btn btn-outline-primary rounded-pill px-4">
+                Daftar Sekarang
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle Password
+        document.getElementById('togglePassword')?.addEventListener('click', function() {
+            const input = document.getElementById('loginPassword');
+            const type = input.type === 'password' ? 'text' : 'password';
+            input.type = type;
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+        // Jika login gagal → kasih pesan + arahkan ke register
+        {% if messages %}
+            {% for message in messages %}
+                {% if 'error' in message.tags %}
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Gagal',
+                        text: '{{ message }}',
+                        confirmButtonText: 'Daftar Sekarang',
+                        confirmButtonColor: '#f85a87',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "{% url 'register' %}";
+                        }
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </script>
+</body>
+</html>

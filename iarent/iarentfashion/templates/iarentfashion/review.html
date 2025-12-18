@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IA Rent Fashion - Review</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    
+    {% load static %}
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/review.css' %}">
+    
+</head>
+
+<body>
+    <!-- SVG ICONS -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="navbar-icon" viewBox="0 0 16 16">
+        <path d="M2 4h12v1H2zM2 8h12v1H2zM2 12h12v1H2z"/>
+      </symbol>
+      <symbol id="heart" viewBox="0 0 16 16">
+        <path d="M8 15S3 12 1.5 8.5C.5 6.5 1.5 3.5 4.5 3.5c1.5 0 2.5 1 3.5 2 1-1 2-2 3.5-2 3 0 4 3 3 5-1.5 3.5-6.5 6.5-6.5 6.5z"/>
+      </symbol>
+      <symbol id="cart" viewBox="0 0 16 16">
+        <path d="M0 1a1 1 0 0 1 1-1h1.11a.5.5 0 0 1 .485.379L2.89 2H14a1 1 0 0 1 .962 1.273l-1.5 5A1 1 0 0 1 12.5 9H4.118l-.25 1H13a.5.5 0 0 1 0 1H3.5a.5.5 0 0 1-.485-.621L4.89 3H1.5a.5.5 0 0 1 0-1H1zM4.118 8h8.382l1.2-4H4.118zM5.5 12a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+      </symbol>
+      <symbol id="user" viewBox="0 0 16 16">
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4.5 7a.5.5 0 0 0 .5-.5v-.5a4 4 0 0 0-8 0v.5a.5.5 0 0 0 .5.5h7z"/>
+      </symbol>
+      <symbol id="search" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+      </symbol>
+    </svg>
+
+   <header id="header" class="site-header">
+        <nav class="navbar navbar-expand-lg py-3 border-bottom bg-white shadow-sm fixed-top">
+            <div class="container position-relative">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="{% url 'beranda' %}">
+                    <img src="{% static 'images/main-logo.png' %}" alt="IA Rent Fashion Logo" style="height: 80px;">
+                </a>
+
+                <!-- TOGGLER -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- MENU TENGAH (DESKTOP) -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto text-uppercase fw-semibold gap-4">
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">Koleksi</a>
+                            <ul class="dropdown-menu border-0 shadow">
+                                <li><a class="dropdown-item" href="{% url 'koleksi' %}">SEMUA KOLEKSI</a></li>
+                                <li><a class="dropdown-item" href="{% url 'jas' %}">Jas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dress' %}">Dress</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                                <li><a class="dropdown-item" href="{% url 'kebaya' %}">Kebaya</a></li>
+                                <li><a class="dropdown-item" href="{% url 'footwear' %}">Footwear</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark active" href="{% url 'review' %}">Review</a></li>
+                    </ul>
+                </div>
+
+                <!-- ICON KANAN — INI YANG KAMU MAU! -->
+                <div class="position-absolute end-0 top-50 translate-middle-y d-flex align-items-center gap-3 pe-4">
+                    {% comment %} <!-- Wishlist -->
+                    <a href="#" class="text-dark position-relative" onclick="event.preventDefault(); addToWishlist(0)">
+                        <i class="bi bi-heart fs-4"></i>
+                        <span id="wishlistCount" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a> {% endcomment %}
+
+                    <!-- Cart -->
+                    <a href="#" class="text-dark position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="bi bi-bag fs-4"></i>
+                        <span id="cartCount" class="badge bg-warning text-dark rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a>
+
+                    <!-- User Menu — ICON CANTIK KEMBALI + WARNA SESUAI! -->
+                    <!-- User Menu — UKURAN PAS, CANTIK, DAN TIDAK GEDE LAGI! -->
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a href="#" class="text-dark dropdown-toggle d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-4"></i>
+                                <span class="ms-2 d-none d-lg-inline fw-medium">{{ user.username|truncatechars:12 }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width: 200px;">
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'profile' %}">
+                                        <i class="bi bi-person-circle text-primary me-3"></i> Profile Saya
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'pesanan' %}">
+                                        <i class="bi bi-bag-check text-warning me-3"></i> Pesanan Saya
+                                    </a>
+                                </li>
+                                {% comment %} <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="#">
+                                        <i class="bi bi-heart text-danger me-3"></i> Favorit Saya
+                                    </a>
+                                </li> {% endcomment %}
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded text-danger fw-medium" href="{% url 'logout' %}">
+                                        <i class="bi bi-box-arrow-right me-3"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm rounded-pill px-3">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-sm rounded-pill px-3">Daftar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- OFFCANVAS MOBILE — TETAP CANTIK -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold">IA Rent Fashion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-4">
+                <ul class="navbar-nav mx-auto flex-column text-center gap-4">
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link fs-5 text-dark dropdown-toggle" data-bs-toggle="dropdown" href="#">Koleksi</a>
+                        <ul class="dropdown-menu w-100 text-center shadow">
+                            <li><a class="dropdown-item py-2" href="{% url 'jas' %}">Jas</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'dress' %}">Dress</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'kebaya' %}">Kebaya</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'footwear' %}">Footwear</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'review' %}">Review</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL KERANJANG -->
+    <div class="modal fade" id="cartModal" tabberanda="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header border-bottom-0">
+            <h5 class="modal-title fw-bold">Keranjang Belanja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div id="cart-content"></div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fw-semibold">Total Items:</span>
+                <span class="fw-bold" id="cart-total-items">0 items</span>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-dark rounded-pill" onclick="continueShopping()">Lanjut Belanja</button>
+                <button class="btn btn-primary rounded-pill" onclick="checkout()">Checkout Sekarang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <section class="py-5">
+            <div class="container">
+                <!-- Header -->
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-8">
+                        <h2 class="text-center mb-4" style="font-size: 2.5rem; font-weight: 800;">APA KATA MEREKA?</h2>
+                        <p class="text-center" style="font-size: 1.2rem; color: #666;">Pendapat pelanggan yang sudah mencoba layanan kami</p>
+                    </div>
+                    {% comment %} <div class="col-md-4 text-center text-md-end mt-4 mt-md-0">
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#tambahReviewModal">
+                            <i class="bi bi-pencil-square me-2"></i>Tambah Review
+                        </button>
+                        {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-pink">
+                            <i class="bi bi-pencil-square me-2"></i>Login untuk Review
+                        </a>
+                        {% endif %}
+                    </div> {% endcomment %}
+                </div>
+
+                <!-- Review Statistics -->
+                <div class="review-stats mb-5">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <div class="rating-summary">
+                                <div class="average-rating">{{ average_rating|default:"0.0" }}</div>
+                                <div class="rating-stars">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= average_rating %}
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        {% else %}
+                                            <i class="bi bi-star text-warning"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="total-reviews">Berdasarkan {{ total_reviews }} review</div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            {% for rating in rating_distribution %}
+                            <div class="rating-bar">
+                                <div class="rating-label">{{ rating.rating }} Bintang</div>
+                                <div class="rating-progress">
+                                    <div class="rating-fill" style="width: {{ rating.percentage }}%"></div>
+                                </div>
+                                <div class="rating-count">{{ rating.count }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <h5 class="fw-bold mb-3">Filter Berdasarkan Rating:</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn rating-filter {% if current_rating_filter == '0' %}active{% endif %}" data-rating="0">Semua Review</button>
+                        <button class="btn rating-filter {% if current_rating_filter == '5' %}active{% endif %}" data-rating="5"><i class="bi bi-star-fill text-warning"></i> 5 Bintang</button>
+                        <button class="btn rating-filter {% if current_rating_filter == '4' %}active{% endif %}" data-rating="4"><i class="bi bi-star-fill text-warning"></i> 4 Bintang</button>
+                        <button class="btn rating-filter {% if current_rating_filter == '3' %}active{% endif %}" data-rating="3"><i class="bi bi-star-fill text-warning"></i> 3 Bintang</button>
+                        <button class="btn rating-filter {% if current_rating_filter == '2' %}active{% endif %}" data-rating="2"><i class="bi bi-star-fill text-warning"></i> 2 Bintang</button>
+                        <button class="btn rating-filter {% if current_rating_filter == '1' %}active{% endif %}" data-rating="1"><i class="bi bi-star-fill text-warning"></i> 1 Bintang</button>
+                    </div>
+                </div>
+
+                <!-- Review Container -->
+                <div id="reviewsContainer">
+                    {% for review in reviews %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="review-card fade-in">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h6 class="fw-bold mb-1">{{ review.user.username }}</h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="rating-stars">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= review.rating %}
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                {% else %}
+                                                    <i class="bi bi-star text-warning"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <span class="badge bg-success ms-2">
+                                            <i class="bi bi-patch-check-fill"></i> Terverifikasi
+                                        </span>
+                                    </div>
+                                </div>
+                                <small class="text-muted">{{ review.created_at|date:"d M Y" }}</small>
+                            </div>
+                            <p class="review-text mb-0">"{{ review.comment }}"</p>
+                            {% if review.product %}
+                            <div class="mt-2">
+                                <small class="text-muted">Produk: {{ review.product.name }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="bi bi-chat-square-text"></i>
+                        <h4>Belum ada review</h4>
+                        <p>Jadilah yang pertama memberikan review!</p>
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#tambahReviewModal">
+                            <i class="bi bi-pencil-square me-2"></i>Tulis Review Pertama
+                        </button>
+                        {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-pink">
+                            <i class="bi bi-pencil-square me-2"></i>Login untuk Review
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if reviews.has_other_pages %}
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        {% if reviews.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ reviews.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for i in reviews.paginator.page_range %}
+                            {% if reviews.number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if reviews.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ reviews.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Tambah Review -->
+    {% if user.is_authenticated %}
+    <div class="modal fade" id="tambahReviewModal" tabberanda="-1" aria-labelledby="tambahReviewLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahReviewLabel">Tulis Review Kamu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="{% url 'submit_review' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Produk</label>
+                            <select class="form-select" name="product" required>
+                                <option value="">Pilih Produk</option>
+                                {% for product in user_products %}
+                                <option value="{{ product.id }}">{{ product.name }}</option>
+                                {% empty %}
+                                <option value="">Belum ada produk yang disewa</option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">Hanya produk yang pernah disewa dapat direview</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <select class="form-select" name="rating" id="reviewRating" required>
+                                    <option value="5">5 Bintang</option>
+                                    <option value="4">4 Bintang</option>
+                                    <option value="3">3 Bintang</option>
+                                    <option value="2">2 Bintang</option>
+                                    <option value="1">1 Bintang</option>
+                                </select>
+                                <div id="interactiveStars"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pesan / Ulasan</label>
+                            <textarea class="form-control" name="comment" id="reviewMessage" rows="4" placeholder="Tulis pendapatmu di sini..." required></textarea>
+                            <div class="form-text">Minimal 10 karakter</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-pink" id="submitReview">Kirim Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- FOOTER -->
+    <footer id="footer" class="bg-white border-top mt-5">
+      <div class="container py-5">
+        <div class="row gy-4">
+          <div class="col-lg-3 col-sm-6">
+            <img src="{% static 'images/main-logo.png' %}" alt="logo"
+              class="img-fluid mb-3" style="max-width: 200px;">
+            <p>Jl. Brigjend H. Hasan Basri, Pangeran, Kec. Banjarmasin Utara,<br>Kota Banjarmasin, Kalimantan Selatan 70123</p>
+            <ul class="d-flex list-unstyled gap-3 mt-3">
+              <li><a href="https://facebook.com" class="text-dark"><i class="bi bi-facebook fs-5"></i></a></li>
+              <li><a href="https://instagram.com" class="text-dark"><i class="bi bi-instagram fs-5"></i></a></li>
+              <li><a href="https://youtube.com" class="text-dark"><i class="bi bi-youtube fs-5"></i></a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-sm-6">
+            <h5 class="fw-bold mb-3">Quick Links</h5>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'beranda' %}" class="text-dark text-decoration-none">Beranda</a></li>
+              <li><a href="{% url 'koleksi' %}" class="text-dark text-decoration-none">Koleksi</a></li>
+              <li><a href="{% url 'inspirasi' %}" class="text-dark text-decoration-none">Inspirasi</a></li>
+              <li><a href="{% url 'kontak' %}" class="text-dark text-decoration-none">Kontak</a></li>
+              <li><a href="{% url 'tentang' %}" class="text-dark text-decoration-none">Tentang</a></li>
+              <li><a href="{% url 'review' %}" class="text-dark text-decoration-none">Review</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-sm-6">
+            <h5 class="fw-bold mb-3">Help & Info</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-dark text-decoration-none">Cek Pesanan</a></li>
+              <li><a href="#" class="text-dark text-decoration-none">Kebijakan Pengembalian</a></li>
+              <li><a href="#" class="text-dark text-decoration-none">Hubungi Kami</a></li>
+              <li><a href="#" class="text-dark text-decoration-none">FAQ</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-sm-6">
+            <h5 class="fw-bold mb-3">Contact Us</h5>
+            <p>
+              Ada pertanyaan atau saran? <br>
+              <a href="mailto:iarentfashion@gmail.com" class="text-dark text-decoration-underline">iarentfashion@gmail.com</a>
+            </p>
+            <p>
+              Butuh bantuan cepat? Hubungi kami: <br>
+              <a href="https://wa.me/6281122233344" class="text-dark text-decoration-underline">+62 811-2223-3344</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="border-top mt-4 pt-3 d-flex justify-content-between align-items-center flex-wrap">
+          <div class="d-flex align-items-center gap-3">
+            <p class="mb-0 small fw-semibold">Payment options:</p>
+            <img src="{% static 'images/visa.jpg' %}" alt="Visa" width="40" height="25"
+              class="rounded shadow-sm">
+            <img src="{% static 'images/mastercard.jpg' %}" alt="MasterCard" width="40" height="25"
+              class="rounded shadow-sm">
+            <img src="{% static 'images/paypal.jpg' %}" alt="PayPal" width="40" height="25"
+              class="rounded shadow-sm">
+          </div>
+          <p class="mb-0 small text-secondary">© 2025 IA Rent Fashion. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/review.js' %}"></script>
+        <!-- DATA GLOBAL & JS — VERSI FINAL & SUPER AMAN -->
+    <script>
+    // Pastikan window.djangoData selalu ada
+    window.djangoData = window.djangoData || {};
+
+    // Data login & URL
+    window.djangoData.isLoggedIn = {{ user.is_authenticated|yesno:"true,false" }};
+    window.djangoData.csrfToken = "{{ csrf_token }}";
+
+    window.djangoData.urls = {
+        login: "{% url 'login' %}",
+        {% if user.is_authenticated %}
+            apiCartAdd: "{% url 'api_cart_add' %}",
+            apiWishlistAdd: "{% url 'api_wishlist_add' %}",
+            sewa: "{% url 'sewa' %}",
+            clearWelcome: "{% url 'clear_welcome' %}"
+        {% else %}
+            apiCartAdd: null,
+            apiWishlistAdd: null,
+            sewa: null,
+            clearWelcome: null
+        {% endif %}
+    };
+    </script>
+
+    <!-- SweetAlert2 — WAJIB! -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- App JS — SATU FILE SAJA! -->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <!-- WELCOME POPUP SETELAH LOGIN/DAFTAR -->
+    {% if request.session.show_welcome %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Selamat Datang!',
+            text: 'Kamu berhasil masuk ke IA Rent Fashion',
+            timer: 3000,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        }).then(() => {
+            // Hapus flag welcome
+            fetch(window.djangoData.urls.clearWelcome, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': window.djangoData.csrfToken }
+            });
+        });
+    });
+    </script>
+    {% endif %}
+</body>
+</html>
