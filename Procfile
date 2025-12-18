@@ -1,1 +1,1 @@
-web: gunicorn iarent.wsgi
+web: gunicorn iarent.wsgi:application
