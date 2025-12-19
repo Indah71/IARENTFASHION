@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5" style="margin-top: 100px">
+    <div class="row">
+        <div class="col-12">
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Detail Pesanan</h2>
+                    <p class="text-muted mb-0">#{{ order.order_number }}</p>
+                </div>
+                <a href="{% url 'pesanan' %}" class="btn btn-outline-dark">
+                    <i class="bi bi-arrow-left me-2"></i>Kembali
+                </a>
+            </div>
+
+            <!-- STATUS & INFO -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold">Status Pesanan</h5>
+                            <span class="badge status-{{ order.status }} fs-6">
+                                {% if order.status == 'pending' %}
+                                    <i class="bi bi-clock-history me-1"></i>Menunggu Konfirmasi
+                                {% elif order.status == 'paid' %}
+                                    <i class="bi bi-check-circle me-1"></i>Dikonfirmasi
+                                {% elif order.status == 'delivered' %}
+                                    <i class="bi bi-box-seam me-1"></i>Selesai
+                                {% elif order.status == 'cancelled' %}
+                                    <i class="bi bi-x-circle me-1"></i>Dibatalkan
+                                {% else %}
+                                    {{ order.status }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="fw-bold">Informasi Pesanan</h5>
+                            <p class="mb-1"><strong>Tanggal:</strong> {{ order.created_at|date:"d M Y H:i" }}</p>
+                            <p class="mb-1"><strong>Total:</strong> Rp {{ order.total_price|floatformat:0 }}</p>
+                            {% if order.notes %}
+                            <p class="mb-0"><strong>Catatan:</strong> {{ order.notes }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ITEMS PESANAN -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="fw-bold mb-0">Items Pesanan</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in order_items %}
+                    <div class="order-product-detail d-flex align-items-center py-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/no-image.jpg' %}{% endif %}" 
+                             alt="{{ item.product.name }}" 
+                             class="product-image-detail rounded me-4"
+                             style="width: 80px; height: 80px; object-fit: cover">
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold mb-2">{{ item.product.name }}</h6>
+                            <p class="text-muted mb-1">
+                                <i class="bi bi-tag me-1"></i>{{ item.product.category.name }}
+                            </p>
+                            <p class="mb-1">
+                                <strong>Ukuran:</strong> {{ item.size }} • 
+                                <strong>Quantity:</strong> {{ item.quantity }}
+                            </p>
+                            <p class="mb-0 text-success">
+                                <strong>Harga:</strong> Rp {{ item.price|floatformat:0 }} /item
+                            </p>
+                        </div>
+                        <div class="text-end">
+                            <h6 class="text-primary fw-bold">Rp {{ item.get_subtotal|floatformat:0 }}</h6>
+                            <small class="text-muted">Subtotal</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- RINGKASAN PEMBAYARAN -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="fw-bold mb-0">Ringkasan Pembayaran</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Informasi Pengiriman</h6>
+                            <p class="mb-1">{{ order.shipping_address }}</p>
+                            <p class="mb-0"><strong>Telepon:</strong> {{ order.phone }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold">Detail Pembayaran</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <span>Rp {{ order.total_price|floatformat:0 }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Deposit (10%):</span>
+                                <span>Rp {{ order.deposit_amount|floatformat:0 }}</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold fs-5">
+                                <span>Total Bayar:</span>
+                                <span class="text-success">Rp {{ order.total_with_deposit|floatformat:0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOMBOL AKSI -->
+            {% if order.status == 'pending' %}
+            <div class="text-center mt-4">
+                <button class="btn btn-danger" onclick="cancelOrder('{{ order.id }}')">
+                    <i class="bi bi-x-circle me-2"></i>Batalkan Pesanan
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

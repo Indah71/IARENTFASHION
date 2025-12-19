@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IA Rent Fashion</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/beranda.css' %}">
+</head>
+
+<body>
+    <!-- SVG ICONS DEFINITIONS -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="alt-arrow-right-outline" viewBox="0 0 24 24">
+        <path fill="currentColor" fill-rule="evenodd"
+          d="M8.512 4.43a.75.75 0 0 1 1.057.082l6 7a.75.75 0 0 1 0 .976l-6 7a.75.75 0 0 1-1.138-.976L14.012 12L8.431 5.488a.75.75 0 0 1 .08-1.057"
+          clip-rule="evenodd" />
+      </symbol>
+      <symbol id="alt-arrow-left-outline" viewBox="0 0 24 24">
+        <path fill="currentColor" fill-rule="evenodd"
+          d="M15.488 4.43a.75.75 0 0 1 .081 1.058L9.988 12l5.581 6.512a.75.75 0 1 1-1.138.976l-6-7a.75.75 0 0 1 0-.976l6-7a.75.75 0 0 1 1.057-.081"
+          clip-rule="evenodd" />
+      </symbol>
+      <symbol id="cart-outline" viewBox="0 0 16 16">
+        <path
+          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+      </symbol>
+      <symbol id="quality" viewBox="0 0 16 16">
+        <path
+          d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68L9.669.864zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702 1.509.229z" />
+        <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+      </symbol>
+      <symbol id="price-tag" viewBox="0 0 16 16">
+        <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0z" />
+        <path
+          d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1zm0 5.586 7 7L13.586 9l-7-7H2v4.586z" />
+      </symbol>
+      <symbol id="shield-plus" viewBox="0 0 16 16">
+        <path
+          d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z" />
+        <path
+          d="M8 4.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V9a.5.5 0 0 1-1 0V7.5H6a.5.5 0 0 1 0-1h1.5V5a.5.5 0 0 1 .5-.5z" />
+      </symbol>
+      <symbol id="star-fill" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M9.153 5.408C10.42 3.136 11.053 2 12 2c.947 0 1.58 1.136 2.847 3.408l.328.588c.36.646.54.969.82 1.182c.28.213.63.292 1.33.45l.636.144c2.46.557 3.689.835 3.982 1.776c.292.94-.546 1.921-2.223 3.882l-.434.507c-.476.557-.715.836-.822 1.18c-.107.345-.071.717.001 1.46l.066.677c.253 2.617.38 3.925-.386 4.506c-.766.582-1.918.051-4.22-1.009l-.597-.274c-.654-.302-.981-.452-1.328-.452c-.347 0-.674.15-1.328.452l-.596.274c-2.303 1.06-3.455 1.59-4.22 1.01c-.767-.582-.64-1.89-.387-4.507l.066-.676c.072-.744.108-1.116 0-1.46c-.106-.345-.345-.624-.821-1.18l-.434-.508c-1.677-1.96-2.515-2.941-2.223-3.882c.293-.941 1.523-1.22 3.983-1.776l.636-.144c.699-.158 1.048-.237 1.329-.45c.28-.213.46-.536.82-1.182z" />
+      </symbol>
+      <symbol id="star-empty" viewBox="0 0 16 16">
+        <path
+          d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+      </symbol>
+      <symbol id="star-half" viewBox="0 0 16 16">
+        <path
+          d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.548.548 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.52.52 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.58.58 0 0 1 .085-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.565.565 0 0 1 .162-.505l2.907-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.001 2.223 8 2.226v9.8z" />
+      </symbol>
+      <symbol id="quote" viewBox="0 0 24 24">
+        <path fill="currentColor" d="m15 17l2-4h-4V6h7v7l-2 4h-3Zm-9 0l2-4H4V6h7v7l-2 4H6Z" />
+      </symbol>
+      <symbol id="facebook" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01Z" />
+      </symbol>
+      <symbol id="youtube" viewBox="0 0 32 32">
+        <path fill="currentColor"
+          d="M29.41 9.26a3.5 3.5 0 0 0-2.47-2.47C24.76 6.2 16 6.2 16 6.2s-8.76 0-10.94.59a3.5 3.5 0 0 0-2.47 2.47A36.13 36.13 0 0 0 2 16a36.13 36.13 0 0 0 .59 6.74a3.5 3.5 0 0 0 2.47 2.47c2.18.59 10.94.59 10.94.59s8.76 0 10.94-.59a3.5 3.5 0 0 0 2.47-2.47A36.13 36.13 0 0 0 30 16a36.13 36.13 0 0 0-.59-6.74ZM13.2 20.2v-8.4l7.27 4.2Z" />
+      </symbol>
+      <symbol id="twitter" viewBox="0 0 256 256">
+        <path fill="currentColor"
+          d="m245.66 77.66l-29.9 29.9C209.72 177.58 150.67 232 80 232c-14.52 0-26.49-2.3-35.58-6.84c-7.33-3.67-10.33-7.6-11.08-8.72a8 8 0 0 1 3.85-11.93c.26-.1 24.24-9.31 39.47-26.84a110.93 110.93 0 0 1-21.88-24.2c-12.4-18.41-26.28-50.39-22-98.18a8 8 0 0 1 13.65-4.92c.35.35 33.28 33.1 73.54 43.72V88a47.87 47.87 0 0 1 14.36-34.3A46.87 46.87 0 0 1 168.1 40a48.66 48.66 0 0 1 41.47 24H240a8 8 0 0 1 5.66 13.66Z" />
+      </symbol>
+      <symbol id="instagram" viewBox="0 0 256 256">
+        <path fill="currentColor"
+          d="M128 80a48 48 0 1 0 48 48a48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32Zm48-136H80a56.06 56.06 0 0 0-56 56v96a56.06 56.06 0 0 0 56 56h96a56.06 56.06 0 0 0 56-56V80a56.06 56.06 0 0 0-56-56Zm40 152a40 40 0 0 1-40 40H80a40 40 0 0 1-40-40V80a40 40 0 0 1 40-40h96a40 40 0 0 1 40 40ZM192 76a12 12 0 1 1-12-12a12 12 0 0 1 12 12Z" />
+      </symbol>
+      <symbol id="linkedin" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M6.94 5a2 2 0 1 1-4-.002a2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" />
+      </symbol>
+      <symbol id="nav-icon" viewBox="0 0 16 16">
+        <path
+          d="M14 10.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0 0 1h11a.5.5 0 0 0 .5-.5z" />
+      </symbol>
+      <symbol id="close" viewBox="0 0 16 16">
+        <path
+          d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+      </symbol>
+      <symbol id="navbar-icon" viewBox="0 0 16 16">
+        <path d="M2 4h12v1H2zM2 8h12v1H2zM2 12h12v1H2z"/>
+      </symbol>
+      <symbol id="heart" viewBox="0 0 16 16">
+        <path d="M8 15S3 12 1.5 8.5C.5 6.5 1.5 3.5 4.5 3.5c1.5 0 2.5 1 3.5 2 1-1 2-2 3.5-2 3 0 4 3 3 5-1.5 3.5-6.5 6.5-6.5 6.5z"/>
+      </symbol>
+      <symbol id="cart" viewBox="0 0 16 16">
+        <path d="M0 1a1 1 0 0 1 1-1h1.11a.5.5 0 0 1 .485.379L2.89 2H14a1 1 0 0 1 .962 1.273l-1.5 5A1 1 0 0 1 12.5 9H4.118l-.25 1H13a.5.5 0 0 1 0 1H3.5a.5.5 0 0 1-.485-.621L4.89 3H1.5a.5.5 0 0 1 0-1H1zM4.118 8h8.382l1.2-4H4.118zM5.5 12a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+      </symbol>
+      <symbol id="user" viewBox="0 0 16 16">
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4.5 7a.5.5 0 0 0 .5-.5v-.5a4 4 0 0 0-8 0v.5a.5.5 0 0 0 .5.5h7z"/>
+      </symbol>
+    </svg>
+
+   <header id="header" class="site-header">
+        <nav class="navbar navbar-expand-lg py-3 border-bottom bg-white shadow-sm fixed-top">
+            <div class="container position-relative">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="{% url 'beranda' %}">
+                    <img src="{% static 'images/main-logo.png' %}" alt="IA Rent Fashion Logo" style="height: 80px;">
+                </a>
+
+                <!-- TOGGLER -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- MENU TENGAH (DESKTOP) -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto text-uppercase fw-semibold gap-4">
+                        <li class="nav-item"><a class="nav-link text-dark active" href="{% url 'beranda' %}">Beranda</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" data-bs-toggle="dropdown">Koleksi</a>
+                            <ul class="dropdown-menu border-0 shadow">
+                                <li><a class="dropdown-item" href="{% url 'koleksi' %}">SEMUA KOLEKSI</a></li>
+                                <li><a class="dropdown-item" href="{% url 'jas' %}">Jas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dress' %}">Dress</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                                <li><a class="dropdown-item" href="{% url 'kebaya' %}">Kebaya</a></li>
+                                <li><a class="dropdown-item" href="{% url 'footwear' %}">Footwear</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'review' %}">Review</a></li>
+                    </ul>
+                </div>
+
+                <!-- ICON KANAN — INI YANG KAMU MAU! -->
+                <div class="position-absolute end-0 top-50 translate-middle-y d-flex align-items-center gap-3 pe-4">
+                    {% comment %} <!-- Wishlist -->
+                    <a href="#" class="text-dark position-relative" onclick="event.preventDefault(); addToWishlist(0)">
+                        <i class="bi bi-heart fs-4"></i>
+                        <span id="wishlistCount" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a> {% endcomment %}
+
+                    <!-- Cart -->
+                    <a href="#" class="text-dark position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="bi bi-bag fs-4"></i>
+                        <span id="cartCount" class="badge bg-warning text-dark rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a>
+
+                    <!-- User Menu — ICON CANTIK KEMBALI + WARNA SESUAI! -->
+                    <!-- User Menu — UKURAN PAS, CANTIK, DAN TIDAK GEDE LAGI! -->
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a href="#" class="text-dark dropdown-toggle d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-4"></i>
+                                <span class="ms-2 d-none d-lg-inline fw-medium">{{ user.username|truncatechars:12 }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width: 200px;">
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'profile' %}">
+                                        <i class="bi bi-person-circle text-primary me-3"></i> Profile Saya
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'pesanan' %}">
+                                        <i class="bi bi-bag-check text-warning me-3"></i> Pesanan Saya
+                                    </a>
+                                </li>
+                                {% comment %} <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="#">
+                                        <i class="bi bi-heart text-danger me-3"></i> Favorit Saya
+                                    </a>
+                                </li> {% endcomment %}
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded text-danger fw-medium" href="{% url 'logout' %}">
+                                        <i class="bi bi-box-arrow-right me-3"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm rounded-pill px-3">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-sm rounded-pill px-3">Daftar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- OFFCANVAS MOBILE — TETAP CANTIK -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold">IA Rent Fashion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-4">
+                <ul class="navbar-nav mx-auto flex-column text-center gap-4">
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link fs-5 text-dark dropdown-toggle" data-bs-toggle="dropdown" href="#">Koleksi</a>
+                        <ul class="dropdown-menu w-100 text-center shadow">
+                                <li><a class="dropdown-item" href="{% url 'koleksi' %}">SEMUA KOLEKSI</a></li>
+                                <li><a class="dropdown-item" href="{% url 'jas' %}">Jas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dress' %}">Dress</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                                <li><a class="dropdown-item" href="{% url 'kebaya' %}">Kebaya</a></li>
+                                <li><a class="dropdown-item" href="{% url 'footwear' %}">Footwear</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'review' %}">Review</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL KERANJANG -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header border-bottom-0">
+            <h5 class="modal-title fw-bold">Keranjang Belanja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div id="cart-content">
+              <!-- Loading spinner -->
+              <div class="text-center py-4" id="cart-loading">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Memuat keranjang...</p>
+              </div>
+              <!-- Cart items akan dimuat di sini -->
+            </div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fw-semibold">Total Items:</span>
+                <span class="fw-bold" id="cart-total-items">0 items</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fw-semibold">Total Harga:</span>
+                <span class="fw-bold" id="cart-total-price">Rp 0</span>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-dark rounded-pill" onclick="continueShopping()">Lanjut Belanja</button>
+                <button class="btn btn-primary rounded-pill" onclick="checkout()" id="checkout-btn" disabled>Checkout Sekarang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Section Billboard -->
+    <section id="billboard" class="position-relative d-flex align-items-center py-5 bg-light-gray"
+      style="background-image: url({% static 'images/banner-image-bg.jpg' %}); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
+      <!-- GANTI DARI DIV MENJADI BUTTON -->
+      <button class="position-absolute end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 main-slider-button-next" 
+              style="z-index: 20; border: none; background: transparent; top: 50%; transform: translateY(-50%);">
+        <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-right-outline"></use>
+        </svg>
+      </button>
+
+      <button class="position-absolute start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 main-slider-button-prev" 
+              style="z-index: 20; border: none; background: transparent; top: 50%; transform: translateY(-50%);">
+        <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+          <use xlink:href="#alt-arrow-left-outline"></use>
+        </svg>
+      </button>
+      <div class="swiper main-swiper">
+        <div class="swiper-wrapper d-flex align-items-center">
+          <div class="swiper-slide">
+            <div class="container">
+              <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
+                <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
+                  <div class="banner-content">
+                    <h2>Selamat Datang di IA Rent Fashion</h2>
+                    <p>Koleksi fashion terbaru dengan harga spesial. Tampil percaya diri setiap hari!</p>
+                    <a href="javascript:void(0)" onclick="handleSewaClick()" class="btn mt-3">Sewa Sekarang</a>
+                  </div>
+                </div>
+                <div class="col-md-6 text-center">
+                  <div class="image-holder">
+                    <img src="{% static 'images/banner-image2.jpg' %}" class="img-fluid" alt="banner">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="container">
+              <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
+                <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
+                  <div class="banner-content">
+                    <h2>Upgrade Gayamu Sekarang!</h2>
+                    <p>Koleksi fashion kekinian yang siap bikin kamu tampil beda. Promo menarik menanti di setiap pembelian.</p>
+                    <a href="javascript:void(0)" onclick="handleSewaClick()" class="btn mt-3">Dapatkan Sekarang</a>
+                  </div>
+                </div>
+                <div class="col-md-6 text-center">
+                  <div class="image-holder">
+                    <img src="{% static 'images/banner-image1.png' %}" class="img-fluid" alt="banner">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="container">
+              <div class="row d-flex flex-column-reverse flex-md-row align-items-center">
+                <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
+                  <div class="banner-content">
+                    <h2>Fashion untuk Setiap Momen</h2>
+                    <p>Temukan inspirasi gaya dari koleksi terbaik kami. Belanja mudah, cepat, dan bergaya!</p>
+                    <a href="javascript:void(0)" onclick="handleSewaClick()" class="btn mt-3">Yuk, Pesan Sekarang!</a>
+                  </div>
+                </div>
+                <div class="col-md-6 text-center">
+                  <div class="image-holder">
+                    <img src="{% static 'images/banner-image.png' %}" class="img-fluid" alt="banner">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="company-services" class="padding-large pb-0">
+      <div class="container">
+        <h3 class="text-center mb-5 text-capitalize fw-bold">Keunggulan Website</h3>
+        <div class="row">
+          <div class="col-lg-3 col-md-6 pb-3 pb-lg-0">
+            <div class="icon-box d-flex">
+              <div class="icon-box-icon pe-3 pb-3">
+                <svg class="cart-outline">
+                  <use xlink:href="#cart-outline" />
+                </svg>
+              </div>
+              <div class="icon-box-content">
+                <h4 class="card-title mb-1 text-capitalize text-dark">Tampilan Menarik</h4>
+                <p>Berisi promo, review pelanggan, dan inspirasi outfit terkini.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 pb-3 pb-lg-0">
+            <div class="icon-box d-flex">
+              <div class="icon-box-icon pe-3 pb-3">
+                <svg class="quality">
+                  <use xlink:href="#quality" />
+                </svg>
+              </div>
+              <div class="icon-box-content">
+                <h4 class="card-title mb-1 text-capitalize text-dark">koleksi Tersusun Rapi</h4>
+                <p>Sewa alat dengan harga bersahabat tanpa mengurangi kualitas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 pb-3 pb-lg-0">
+            <div class="icon-box d-flex">
+              <div class="icon-box-icon pe-3 pb-3">
+                <svg class="price-tag">
+                  <use xlink:href="#price-tag" />
+                </svg>
+              </div>
+              <div class="icon-box-content">
+                <h4 class="card-title mb-1 text-capitalize text-dark">Proses Cepat & Mudah</h4>
+                <p>Pemesanan bisa dilakukan hanya dalam beberapa langkah.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 pb-3 pb-lg-0">
+            <div class="icon-box d-flex">
+              <div class="icon-box-icon pe-3 pb-3">
+                <svg class="shield-plus">
+                  <use xlink:href="#shield-plus" />
+                </svg>
+              </div>
+              <div class="icon-box-content">
+                <h4 class="card-title mb-1 text-capitalize text-dark">Harga Terjangkau</h4>
+                <p>Sewa alat dengan harga bersahabat tanpa mengurangi kualitas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {% comment %} <!-- Best Selling Items - DISESUAIKAN -->
+    <section id="best-selling-items" class="position-relative padding-large">
+        <div class="container">
+            <h3 class="text-center mb-5 text-capitalize fw-bold">Best Selling Items</h3>
+            <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-center mb-5 text-capitalize fw-bold"></h3>
+                <a href="{% url 'koleksi' %}" class="btn">View All</a>
+            </div>
+            
+            <div class="position-absolute top-50 end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next product-slider-button-next">
+                <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+                    <use xlink:href="#alt-arrow-right-outline"></use>
+                </svg>
+            </div>
+            <div class="position-absolute top-50 start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 swiper-prev product-slider-button-prev">
+                <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+                    <use xlink:href="#alt-arrow-left-outline"></use>
+                </svg>
+            </div>
+            
+            <div class="swiper product-swiper">
+                <div class="swiper-wrapper">
+                    <!-- PRODUK 1 -->
+                    <div class="swiper-slide">
+                        <div class="card position-relative p-4 border rounded-3">
+                            <img src="{% static 'images/jas-premium.jpg' %}" class="img-fluid shadow-sm" alt="Jas Premium Navy" style="height: 250px; object-fit: cover; width: 100%;">
+                            <h6 class="mt-4 mb-0 fw-bold"><a href="#">Jas Premium Navy</a></h6>
+                            <div class="review-content d-flex">
+                                <div class="rating text-warning d-flex align-items-center">
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <small class="ms-1 text-muted">(128)</small>
+                                </div>
+                            </div>
+                            <span class="price text-primary fw-bold mb-2 fs-5">Rp. 150.000 /hari</span>
+                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                <button type="button" class="btn btn-dark add-to-cart-btn" 
+                                        data-product-id="1"
+                                        data-product-name="Jas Premium Navy"
+                                        data-product-price="150000"
+                                        data-product-image="{% static 'images/jas-premium.jpg' %}"
+                                        data-product-category="Jas"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Keranjang">
+                                    <svg class="cart" width="16" height="16">
+                                        <use xlink:href="#cart"></use>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-dark add-to-wishlist-btn"
+                                        data-product-id="1"
+                                        data-product-name="Jas Premium Navy"
+                                        data-product-price="150000"
+                                        data-product-image="{% static 'images/jas-premium.jpg' %}"
+                                        data-product-category="Jas"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Wishlist">
+                                    <svg class="wishlist" width="16" height="16">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 2 -->
+                    <div class="swiper-slide">
+                        <div class="card position-relative p-4 border rounded-3">
+                            <img src="{% static 'images/dress-elegant.jpg' %}" class="img-fluid shadow-sm" alt="Dress Elegant Pink" style="height: 250px; object-fit: cover; width: 100%;">
+                            <h6 class="mt-4 mb-0 fw-bold"><a href="#">Dress Elegant Pink</a></h6>
+                            <div class="review-content d-flex">
+                                <div class="rating text-warning d-flex align-items-center">
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-empty" width="16" height="16">
+                                        <use xlink:href="#star-empty"></use>
+                                    </svg>
+                                    <small class="ms-1 text-muted">(95)</small>
+                                </div>
+                            </div>
+                            <span class="price text-primary fw-bold mb-2 fs-5">Rp. 120.000 /hari</span>
+                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                <button type="button" class="btn btn-dark add-to-cart-btn" 
+                                        data-product-id="2"
+                                        data-product-name="Dress Elegant Pink"
+                                        data-product-price="120000"
+                                        data-product-image="{% static 'images/dress-elegant.jpg' %}"
+                                        data-product-category="Dress"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Keranjang">
+                                    <svg class="cart" width="16" height="16">
+                                        <use xlink:href="#cart"></use>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-dark add-to-wishlist-btn"
+                                        data-product-id="2"
+                                        data-product-name="Dress Elegant Pink"
+                                        data-product-price="120000"
+                                        data-product-image="{% static 'images/dress-elegant.jpg' %}"
+                                        data-product-category="Dress"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Wishlist">
+                                    <svg class="wishlist" width="16" height="16">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 3 -->
+                    <div class="swiper-slide">
+                        <div class="card position-relative p-4 border rounded-3">
+                            <img src="{% static 'images/kebaya-modern.jpg' %}" class="img-fluid shadow-sm" alt="Kebaya Modern Gold" style="height: 250px; object-fit: cover; width: 100%;">
+                            <h6 class="mt-4 mb-0 fw-bold"><a href="#">Kebaya Modern Gold</a></h6>
+                            <div class="review-content d-flex">
+                                <div class="rating text-warning d-flex align-items-center">
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <small class="ms-1 text-muted">(156)</small>
+                                </div>
+                            </div>
+                            <span class="price text-primary fw-bold mb-2 fs-5">Rp. 200.000 /hari</span>
+                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                <button type="button" class="btn btn-dark add-to-cart-btn" 
+                                        data-product-id="3"
+                                        data-product-name="Kebaya Modern Gold"
+                                        data-product-price="200000"
+                                        data-product-image="{% static 'images/kebaya-modern.jpg' %}"
+                                        data-product-category="Kebaya"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Keranjang">
+                                    <svg class="cart" width="16" height="16">
+                                        <use xlink:href="#cart"></use>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-dark add-to-wishlist-btn"
+                                        data-product-id="3"
+                                        data-product-name="Kebaya Modern Gold"
+                                        data-product-price="200000"
+                                        data-product-image="{% static 'images/kebaya-modern.jpg' %}"
+                                        data-product-category="Kebaya"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Wishlist">
+                                    <svg class="wishlist" width="16" height="16">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 4 -->
+                    <div class="swiper-slide">
+                        <div class="card position-relative p-4 border rounded-3">
+                            <img src="{% static 'images/sepatu-formal.jpg' %}" class="img-fluid shadow-sm" alt="Sepatu Formal Black" style="height: 250px; object-fit: cover; width: 100%;">
+                            <h6 class="mt-4 mb-0 fw-bold"><a href="#">Sepatu Formal Black</a></h6>
+                            <div class="review-content d-flex">
+                                <div class="rating text-warning d-flex align-items-center">
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-empty" width="16" height="16">
+                                        <use xlink:href="#star-empty"></use>
+                                    </svg>
+                                    <small class="ms-1 text-muted">(87)</small>
+                                </div>
+                            </div>
+                            <span class="price text-primary fw-bold mb-2 fs-5">Rp. 80.000 /hari</span>
+                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                <button type="button" class="btn btn-dark add-to-cart-btn" 
+                                        data-product-id="4"
+                                        data-product-name="Sepatu Formal Black"
+                                        data-product-price="80000"
+                                        data-product-image="{% static 'images/sepatu-formal.jpg' %}"
+                                        data-product-category="Footwear"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Keranjang">
+                                    <svg class="cart" width="16" height="16">
+                                        <use xlink:href="#cart"></use>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-dark add-to-wishlist-btn"
+                                        data-product-id="4"
+                                        data-product-name="Sepatu Formal Black"
+                                        data-product-price="80000"
+                                        data-product-image="{% static 'images/sepatu-formal.jpg' %}"
+                                        data-product-category="Footwear"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Wishlist">
+                                    <svg class="wishlist" width="16" height="16">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUK 5 -->
+                    <div class="swiper-slide">
+                        <div class="card position-relative p-4 border rounded-3">
+                            <img src="{% static 'images/tas-elegan.jpg' %}" class="img-fluid shadow-sm" alt="Tas Elegan Silver" style="height: 250px; object-fit: cover; width: 100%;">
+                            <h6 class="mt-4 mb-0 fw-bold"><a href="#">Tas Elegan Silver</a></h6>
+                            <div class="review-content d-flex">
+                                <div class="rating text-warning d-flex align-items-center">
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <svg class="star star-fill" width="16" height="16">
+                                        <use xlink:href="#star-fill"></use>
+                                    </svg>
+                                    <small class="ms-1 text-muted">(112)</small>
+                                </div>
+                            </div>
+                            <span class="price text-primary fw-bold mb-2 fs-5">Rp. 60.000 /hari</span>
+                            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
+                                <button type="button" class="btn btn-dark add-to-cart-btn" 
+                                        data-product-id="5"
+                                        data-product-name="Tas Elegan Silver"
+                                        data-product-price="60000"
+                                        data-product-image="{% static 'images/tas-elegan.jpg' %}"
+                                        data-product-category="Aksesoris"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Keranjang">
+                                    <svg class="cart" width="16" height="16">
+                                        <use xlink:href="#cart"></use>
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn btn-dark add-to-wishlist-btn"
+                                        data-product-id="5"
+                                        data-product-name="Tas Elegan Silver"
+                                        data-product-price="60000"
+                                        data-product-image="{% static 'images/tas-elegan.jpg' %}"
+                                        data-product-category="Aksesoris"
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Tambah ke Wishlist">
+                                    <svg class="wishlist" width="16" height="16">
+                                        <use xlink:href="#heart"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> {% endcomment %}
+
+    {% comment %} <!-- Section limited-offer -->
+    <section id="limited-offer" class="position-relative d-flex align-items-center py-5 bg-light-gray"
+      style="background-image: url({% static 'images/banner-image-bg-1.jpg' %}); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
+      <div class="container">
+        <div class="row d-flex align-items-center">
+          <div class="col-md-6 text-center">
+            <div class="image-holder">
+              <img src="{% static 'images/banner-image3.png' %}" class="img-fluid" alt="banner">
+            </div>
+          </div>
+          <div class="col-md-5 offset-md-1 mt-5 mt-md-0 text-center text-md-start">
+            <h2>Diskon Spesial 10% untuk Item Tertentu!</h2>
+            <p>Nikmati potongan harga khusus pada koleksi pilihan kami.Buruan sebelum kehabisan — stok terbatas!</p>
+            <div id="countdown-clock" class="text-dark d-flex align-items-center my-3">
+              <div class="time d-grid pe-3">
+                <span class="days fs-1 fw-normal"></span>
+                <small>Days</small>
+              </div>
+              <span class="fs-1 text-primary">:</span>
+              <div class="time d-grid pe-3 ps-3">
+                <span class="hours fs-1 fw-normal"></span>
+                <small>Hrs</small>
+              </div>
+              <span class="fs-1 text-primary">:</span>
+              <div class="time d-grid pe-3 ps-3">
+                <span class="minutes fs-1 fw-normal"></span>
+                <small>Min</small>
+              </div>
+              <span class="fs-1 text-primary">:</span>
+              <div class="time d-grid ps-3">
+                <span class="seconds fs-1 fw-normal"></span>
+                <small>Sec</small>
+              </div>
+            </div>
+            <a href="javascript:void(0)" onclick="handleSewaClick()" class="btn mt-3">Shop Collection</a>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section> {% endcomment %}
+
+    <!-- Koleksi Section - RAPI 4 KOLOM -->
+    <section id="items-listing" class="padding-large">
+        <div class="container">
+            <h3 class="text-center mb-5 text-capitalize fw-bold">Koleksi</h3>
+            <div class="row g-4">
+                {% for category in categories|slice:":4" %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="featured border rounded-3 p-4 h-100">
+                        <div class="section-title overflow-hidden mb-4">
+                            <h4 class="mb-0 text-center text-capitalize">{{ category.name }}</h4>
+                        </div>
+                        <div class="items-lists">
+                            {% for product in category.products.all|slice:":3" %}
+                            <div class="item d-flex align-items-center mb-3">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}" 
+                                    style="width: 70px; height: 70px; object-fit: cover;">
+                                {% else %}
+                                <img src="{% static 'images/default-product.jpg' %}" class="img-fluid rounded shadow-sm" alt="{{ product.name }}" 
+                                    style="width: 70px; height: 70px; object-fit: cover;">
+                                {% endif %}
+                                <div class="item-content ms-3 flex-grow-1">
+                                    <h6 class="mb-1 fw-bold small">
+                                        <a href="{% url 'product_detail' product.id %}" class="text-dark text-decoration-none">
+                                            {{ product.name|truncatewords:3 }}
+                                        </a>
+                                    </h6>
+                                    <span class="price text-primary fw-bold fs-6">Rp {{ product.price|floatformat:0 }}/hari</span>
+                                </div>
+                            </div>
+                            {% if not forloop.last %}
+                            <hr class="my-2">
+                            {% endif %}
+                            {% empty %}
+                            <div class="text-center py-3">
+                                <i class="bi bi-inbox text-muted" style="font-size: 2rem;"></i>
+                                <p class="text-muted small mt-2 mb-0">Belum ada produk</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Tombol View All -->
+                        <div class="text-center mt-3 pt-2 border-top">
+                            <a href="{% url 'koleksi' %}?category={{ category.name|urlencode }}" 
+                              class="btn btn-outline-dark btn-sm">
+                                Lihat Semua <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-folder-x display-1 text-muted"></i>
+                    <h4 class="mt-3 text-muted">Belum ada kategori tersedia</h4>
+                    <p class="text-muted">Silakan tambahkan kategori dan produk terlebih dahulu.</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Tombol View All Categories -->
+            {% if categories|length > 4 %}
+            <div class="text-center mt-5">
+                <a href="{% url 'koleksi' %}" class="btn btn-primary btn-lg">
+                    Lihat Semua Kategori <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% comment %} <!-- Customers Reviews - DISESUAIKAN -->
+    <section id="customers-reviews" class="position-relative d-flex align-items-center py-5 bg-light-gray"
+      style="background-image: url({% static 'images/banner-image-bg-2.jpg' %}); background-size: cover; background-repeat: no-repeat; background-position: center; height: 800px;">
+      <div class="container offset-md-3 col-md-6">
+        <div class="position-absolute top-50 end-0 pe-0 pe-xxl-5 me-0 me-xxl-5 swiper-next testimonial-button-next">
+          <svg class="chevron-forward-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+            <use xlink:href="#alt-arrow-right-outline"></use>
+          </svg>
+        </div>
+        <div class="position-absolute top-50 start-0 ps-0 ps-xxl-5 ms-0 ms-xxl-5 swiper-prev testimonial-button-prev">
+          <svg class="chevron-back-circle d-flex justify-content-center align-items-center p-2" width="80" height="80">
+            <use xlink:href="#alt-arrow-left-outline"></use>
+          </svg>
+        </div>
+        <div class="section-title mb-4 text-center">
+          <h3 class="mb-4">Customers Reviews</h3>
+        </div>
+        <div class="swiper testimonial-swiper">
+          <div class="swiper-wrapper">
+            {% for review in reviews %}
+            <div class="swiper-slide">
+              <div class="card position-relative text-left p-5 border rounded-3">
+                <blockquote>"{{ review.comment }}"</blockquote>
+                <div class="rating text-warning d-flex align-items-center">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= review.rating %}
+                    <svg class="star star-fill" width="20" height="20">
+                      <use xlink:href="#star-fill"></use>
+                    </svg>
+                    {% else %}
+                    <svg class="star star-empty" width="20" height="20">
+                      <use xlink:href="#star-empty"></use>
+                    </svg>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <h5 class="mt-1 fw-normal">{{ review.user.full_name }}</h5>
+                <small class="text-muted">{{ review.created_at|date:"d M Y" }}</small>
+              </div>
+            </div>
+            {% empty %}
+            <div class="swiper-slide">
+              <div class="card position-relative text-left p-5 border rounded-3 text-center">
+                <blockquote>"Belum ada review untuk ditampilkan."</blockquote>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section> {% endcomment %}
+
+    <!-- Inspirasi Outfit - DISESUAIKAN -->
+    <section id="latest-posts" class="padding-large">
+      <div class="container">
+        <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
+          <h3 class="d-flex align-items-center">Inspirasi Outfit</h3>
+          <a href="{% url 'inspirasi' %}" class="btn">View All</a>
+        </div>
+        <div class="row">
+          <!-- INSPIRASI 1 -->
+          <div class="col-md-3 posts mb-4">
+            <img src="{% static 'images/inspidress4.jpg' %}" alt="Outfit Kasual Modern" class="img-fluid rounded-3" style="height: 250px; object-fit: cover; width: 100%;">
+            <a href="{% url 'inspirasi' %}" class="fs-6 text-primary">Inspirasi</a>
+            <h4 class="card-title mb-2 text-capitalize text-dark">
+              <a href="{% url 'inspirasi' %}">Outfit Kasual Modern</a>
+            </h4>
+            <p class="mb-2">
+              Kombinasi sempurna untuk tampilan kasual yang stylish dan nyaman sepanjang hari.
+              <span><a class="text-decoration-underline text-black-50" href="{% url 'inspirasi' %}">Read More</a></span>
+            </p>
+          </div>
+
+          <!-- INSPIRASI 2 -->
+          <div class="col-md-3 posts mb-4">
+            <img src="{% static 'images/inspikebaya3.jpg' %}" alt="Style Formal Elegan" class="img-fluid rounded-3" style="height: 250px; object-fit: cover; width: 100%;">
+            <a href="{% url 'inspirasi' %}" class="fs-6 text-primary">Inspirasi</a>
+            <h4 class="card-title mb-2 text-capitalize text-dark">
+              <a href="{% url 'inspirasi' %}">Style Formal Elegan</a>
+            </h4>
+            <p class="mb-2">
+              Tampilan formal yang cocok untuk acara penting, meeting, atau presentasi.
+              <span><a class="text-decoration-underline text-black-50" href="{% url 'inspirasi' %}">Read More</a></span>
+            </p>
+          </div>
+
+          <!-- INSPIRASI 3 -->
+          <div class="col-md-3 posts mb-4">
+            <img src="{% static 'images/inspitas.jpg' %}" alt="Look Weekend Santai" class="img-fluid rounded-3" style="height: 250px; object-fit: cover; width: 100%;">
+            <a href="{% url 'inspirasi' %}" class="fs-6 text-primary">Inspirasi</a>
+            <h4 class="card-title mb-2 text-capitalize text-dark">
+              <a href="{% url 'inspirasi' %}">Look Weekend Santai</a>
+            </h4>
+            <p class="mb-2">
+              Gaya santai namun tetap fashionable untuk aktivitas weekend dan hangout.
+              <span><a class="text-decoration-underline text-black-50" href="{% url 'inspirasi' %}">Read More</a></span>
+            </p>
+          </div>
+
+          <!-- INSPIRASI 4 -->
+          <div class="col-md-3 posts mb-4">
+            <img src="{% static 'images/inspijas3.jpg' %}" alt="Party Glam Night" class="img-fluid rounded-3" style="height: 250px; object-fit: cover; width: 100%;">
+            <a href="{% url 'inspirasi' %}" class="fs-6 text-primary">Inspirasi</a>
+            <h4 class="card-title mb-2 text-capitalize text-dark">
+              <a href="{% url 'inspirasi' %}">Party Glam Night</a>
+            </h4>
+            <p class="mb-2">
+              Tampilan glamor dan eye-catching untuk pesta malam dan acara spesial.
+              <span><a class="text-decoration-underline text-black-50" href="{% url 'inspirasi' %}">Read More</a></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="instagram">
+      <div class="container">
+        <div class="text-center mb-4">
+          <h3 class="text-center mb-5 text-capitalize fw-bold">Koleksi Terbaru</h3>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <figure class="instagram-item position-relative rounded-3">
+              <a href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw==" class="image-link position-relative">
+                <div class="icon-overlay position-absolute d-flex justify-content-center">
+                  <svg class="instagram">
+                    <use xlink:href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw=="></use>
+                  </svg>
+                </div>
+                <img src="{% static 'images/insta-item1.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
+              </a>
+            </figure>
+          </div>
+          <div class="col-md-2">
+            <figure class="instagram-item position-relative rounded-3">
+              <a href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw==" class="image-link position-relative">
+                <div class="icon-overlay position-absolute d-flex justify-content-center">
+                  <svg class="instagram">
+                    <use xlink:href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw=="></use>
+                  </svg>
+                </div>
+                <img src="{% static 'images/insta-item2.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
+              </a>
+            </figure>
+          </div>
+          <div class="col-md-2">
+            <figure class="instagram-item position-relative rounded-3">
+              <a href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw==" class="image-link position-relative">
+                <div class="icon-overlay position-absolute d-flex justify-content-center">
+                  <svg class="instagram">
+                    <use xlink:href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw=="></use>
+                  </svg>
+                </div>
+                <img src="{% static 'images/insta-item3.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
+              </a>
+            </figure>
+          </div>
+          <div class="col-md-2">
+            <figure class="instagram-item position-relative rounded-3">
+              <a href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw==" class="image-link position-relative">
+                <div class="icon-overlay position-absolute d-flex justify-content-center">
+                  <svg class="instagram">
+                    <use xlink:href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw=="></use>
+                  </svg>
+                </div>
+                <img src="{% static 'images/insta-item4.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
+              </a>
+            </figure>
+          </div>
+          <div class="col-md-2">
+            <figure class="instagram-item position-relative rounded-3">
+              <a href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw==" class="image-link position-relative">
+                <div class="icon-overlay position-absolute d-flex justify-content-center">
+                  <svg class="instagram">
+                    <use xlink:href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw=="></use>
+                  </svg>
+                </div>
+                <img src="{% static 'images/insta-item5.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
+              </a>
+            </figure>
+          </div>
+          <div class="col-md-2">
+            <figure class="instagram-item position-relative rounded-3">
+              <a href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw==" class="image-link position-relative">
+                <div class="icon-overlay position-absolute d-flex justify-content-center">
+                  <svg class="instagram">
+                    <use xlink:href="https://www.instagram.com/iarentfashion?igsh=MWtheHEwdmc3cmwwcw=="></use>
+                  </svg>
+                </div>
+                <img src="{% static 'images/insta-item6.jpg' %}" alt="instagram" class="img-fluid rounded-3 insta-image">
+              </a>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- FOOTER -->
+  <footer id="footer" class="bg-white border-top mt-5">
+    <div class="container py-5">
+      <div class="row gy-4">
+
+        <div class="col-lg-3 col-sm-6">
+          <img src="{% static 'images/main-logo.png' %}" alt="logo"
+            class="img-fluid mb-3" style="max-width: 200px;">
+          <p>Jl. Brigjend H. Hasan Basri, Pangeran, Kec. Banjarmasin Utara,<br>Kota Banjarmasin, Kalimantan Selatan 70123</p>
+          <ul class="d-flex list-unstyled gap-3 mt-3">
+            <li><a href="https://facebook.com" class="text-dark"><i class="bi bi-facebook fs-5"></i></a></li>
+            <li><a href="https://instagram.com" class="text-dark"><i class="bi bi-instagram fs-5"></i></a></li>
+            <li><a href="https://youtube.com" class="text-dark"><i class="bi bi-youtube fs-5"></i></a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-sm-6">
+          <h5 class="fw-bold mb-3">Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'beranda' %}" class="text-dark text-decoration-none">Beranda</a></li>
+            <li><a href="{% url 'koleksi' %}" class="text-dark text-decoration-none">Koleksi</a></li>
+            <li><a href="{% url 'inspirasi' %}" class="text-dark text-decoration-none">Inspirasi</a></li>
+            <li><a href="{% url 'kontak' %}" class="text-dark text-decoration-none">Kontak</a></li>
+            <li><a href="{% url 'tentang' %}" class="text-dark text-decoration-none">Tentang</a></li>
+            <li><a href="{% url 'review' %}" class="text-dark text-decoration-none">Review</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+          <h5 class="fw-bold mb-3">Help & Info</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-dark text-decoration-none">Cek Pesanan</a></li>
+            <li><a href="#" class="text-dark text-decoration-none">Kebijakan Pengembalian</a></li>
+            <li><a href="#" class="text-dark text-decoration-none">Hubungi Kami</a></li>
+            <li><a href="#" class="text-dark text-decoration-none">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-sm-6">
+          <h5 class="fw-bold mb-3">kontak Us</h5>
+          <p>
+            Ada pertanyaan atau saran? <br>
+            <a href="mailto:iarentfashion@gmail.com" class="text-dark text-decoration-underline">iarentfashion@gmail.com</a>
+          </p>
+          <p>
+            Butuh bantuan cepat? Hubungi kami: <br>
+            <a href="https://wa.me/6281122233344" class="text-dark text-decoration-underline">+62 811-2223-3344</a>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="border-top mt-4 pt-3 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex align-items-center gap-3">
+          <p class="mb-0 small fw-semibold">Payment options:</p>
+          <img src="{% static 'images/visa.jpg' %}" alt="Visa" width="40" height="25"
+            class="rounded shadow-sm">
+          <img src="{% static 'images/mastercard.jpg' %}" alt="MasterCard" width="40" height="25"
+            class="rounded shadow-sm">
+          <img src="{% static 'images/paypal.jpg' %}" alt="PayPal" width="40" height="25"
+            class="rounded shadow-sm">
+        </div>
+        <p class="mb-0 small text-secondary">© 2025 IA Rent Fashion. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Libraries -->
+  <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- Custom JavaScript -->
+  <script src="{% static 'js/beranda.js' %}"></script>
+  
+  <!-- Inline JavaScript untuk Django-specific functionality -->
+  <script>
+    // CSRF Token untuk AJAX requests
+    const csrftoken = '{{ csrf_token }}';
+    
+    // User authentication status
+    const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+
+    // Welcome message jika baru login
+    {% if request.session.show_welcome %}
+      document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+          title: '🎉 Selamat Datang!',
+          html: `
+            <div class="text-start">
+              <p class="mb-3"><strong>Hai, {{ user.username }}!</strong></p>
+              <p class="mb-3">Anda berhasil login. Sekarang Anda dapat:</p>
+              <ul class="text-start">
+                <li>🛒 <strong>Belanja Produk</strong> - Tambahkan ke keranjang dan checkout</li>
+                <li>💖 <strong>Wishlist</strong> - Simpan produk favorit Anda</li>
+                <li>⭐ <strong>Review</strong> - Berikan rating dan ulasan produk</li>
+                <li>📦 <strong>Tracking</strong> - Pantau status pesanan Anda</li>
+              </ul>
+              <div class="alert alert-info mt-3 mb-0">
+                <small>🎁 <strong>Promo:</strong> Gunakan kode <strong>WELCOME10</strong> untuk diskon 10%!</small>
+              </div>
+            </div>
+          `,
+          icon: 'success',
+          confirmButtonText: '🚀 Mulai Belanja!',
+          confirmButtonColor: '#667eea',
+          width: 600,
+          padding: '2rem',
+          backdrop: true,
+          allowOutsideClick: false
+        }).then((result) => {
+          // Clear welcome flag
+          fetch('/api/clear-welcome-flag/', { 
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrftoken,
+            }
+          });
+        });
+      });
+    {% endif %}
+
+    // Event listeners untuk tombol add to cart dan wishlist
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add to Cart buttons
+      document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const productId = this.dataset.productId;
+          const productName = this.dataset.productName;
+          const productPrice = this.dataset.productPrice;
+          const productImage = this.dataset.productImage;
+          const productCategory = this.dataset.productCategory;
+          
+          addToCart(productId);
+        });
+      });
+
+      // Add to Wishlist buttons
+      document.querySelectorAll('.add-to-wishlist-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const productId = this.dataset.productId;
+          const productName = this.dataset.productName;
+          const productPrice = this.dataset.productPrice;
+          const productImage = this.dataset.productImage;
+          const productCategory = this.dataset.productCategory;
+          
+          addToWishlist(productId, productName, productPrice, productImage, productCategory);
+        });
+      });
+
+      // Initialize tooltips
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+  </script>
+
+    <!-- DATA GLOBAL & JS — VERSI FINAL & SUPER AMAN -->
+    <script>
+    // Pastikan window.djangoData selalu ada
+    window.djangoData = window.djangoData || {};
+
+    // Data login & URL
+    window.djangoData.isLoggedIn = {{ user.is_authenticated|yesno:"true,false" }};
+    window.djangoData.csrfToken = "{{ csrf_token }}";
+
+    window.djangoData.urls = {
+        login: "{% url 'login' %}",
+        {% if user.is_authenticated %}
+            apiCartAdd: "{% url 'api_cart_add' %}",
+            apiWishlistAdd: "{% url 'api_wishlist_add' %}",
+            sewa: "{% url 'sewa' %}",
+            clearWelcome: "{% url 'clear_welcome' %}"
+        {% else %}
+            apiCartAdd: null,
+            apiWishlistAdd: null,
+            sewa: null,
+            clearWelcome: null
+        {% endif %}
+    };
+    </script>
+
+    <!-- SweetAlert2 — WAJIB! -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- App JS — SATU FILE SAJA! -->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <!-- WELCOME POPUP SETELAH LOGIN/DAFTAR -->
+    {% if request.session.show_welcome %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Selamat Datang!',
+            text: 'Kamu berhasil masuk ke IA Rent Fashion',
+            timer: 3000,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        }).then(() => {
+            // Hapus flag welcome
+            fetch(window.djangoData.urls.clearWelcome, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': window.djangoData.csrfToken }
+            });
+        });
+    });
+    </script>
+    {% endif %}
+</body>
+</html>

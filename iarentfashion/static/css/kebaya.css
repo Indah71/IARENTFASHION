@@ -1,0 +1,243 @@
+/* static/css/kebaya.css */
+
+.produk-grid {
+    margin-top: 140px !important;
+}
+
+/* Judul koleksi */
+.koleksi-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Container grid produk */
+.koleksi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* Card item */
+.koleksi-item {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+}
+
+.koleksi-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Gambar produk */
+.koleksi-item img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+/* Nama produk */
+.koleksi-item h5 {
+  padding: 15px;
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0;
+  font-weight: 600;
+}
+
+.product-card {
+  border: 1px solid #e8d7e8;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.product-card .foto-produk {
+  height: 280px;
+  object-fit: cover;
+  width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .foto-produk {
+  transform: scale(1.05);
+}
+
+.product-card .card-body {
+  padding: 20px !important;
+}
+
+.product-card .card-body h5 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 600;
+}
+
+.product-card .card-body .text-danger {
+  font-size: 18px;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.product-card .card-body small {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Card Footer dengan Buttons */
+.product-card .card-footer {
+  background-color: transparent !important;
+  border-top: 1px solid #f0f0f0 !important;
+  padding: 15px 20px !important;
+}
+
+/* Button Styling */
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-dark {
+  color: #333;
+  border-color: #333;
+}
+
+.btn-outline-dark:hover {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+.btn-outline-dark i {
+  font-size: 14px;
+}
+
+/* Button Icon (Keranjang) */
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.btn-icon i {
+  font-size: 16px;
+}
+
+/* Cart Modal Styling */
+.cart-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 15px 0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 50px 20px;
+  color: #6c757d;
+}
+
+.cart-empty i {
+  font-size: 56px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.remove-item {
+  color: #dc3545;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid #dc3545;
+}
+
+.remove-item:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity-controls button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .produk-grid {
+      margin-top: 120px !important;
+  }
+  
+  .koleksi-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+  }
+  
+  .product-card .foto-produk {
+      height: 240px;
+  }
+
+  .product-card .card-body h5 {
+      font-size: 16px;
+  }
+
+  .btn-sm {
+      padding: 7px 14px;
+      font-size: 13px;
+  }
+
+  .btn-icon {
+      width: 40px;
+      height: 40px;
+  }
+  
+  .cart-item-image {
+      width: 60px;
+      height: 60px;
+  }
+}

@@ -1,0 +1,722 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Rent Fashion - {{ product.name }}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/detail_produk.css' %}">
+</head>
+<body>
+    <header id="header" class="site-header">
+        <nav class="navbar navbar-expand-lg py-3 border-bottom bg-white shadow-sm fixed-top">
+            <div class="container position-relative">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="{% url 'beranda' %}">
+                    <img src="{% static 'images/main-logo.png' %}" alt="IA Rent Fashion Logo" style="height: 80px;">
+                </a>
+
+                <!-- TOGGLER -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- MENU TENGAH (DESKTOP) -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto text-uppercase fw-semibold gap-4">
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle active" href="#" data-bs-toggle="dropdown">Koleksi</a>
+                            <ul class="dropdown-menu border-0 shadow">
+                                <li><a class="dropdown-item" href="{% url 'koleksi' %}">SEMUA KOLEKSI</a></li>
+                                <li><a class="dropdown-item" href="{% url 'jas' %}">Jas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'dress' %}">Dress</a></li>
+                                <li><a class="dropdown-item" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                                <li><a class="dropdown-item" href="{% url 'kebaya' %}">Kebaya</a></li>
+                                <li><a class="dropdown-item" href="{% url 'footwear' %}">Footwear</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" href="{% url 'review' %}">Review</a></li>
+                    </ul>
+                </div>
+
+                <!-- ICON KANAN -->
+                <div class="position-absolute end-0 top-50 translate-middle-y d-flex align-items-center gap-3 pe-4">
+                    <!-- Cart -->
+                    <a href="#" class="text-dark position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+                        <i class="bi bi-bag fs-4"></i>
+                        <span id="cartCount" class="badge bg-warning text-dark rounded-pill position-absolute top-0 start-100 translate-middle" style="font-size: 0.65rem;">0</span>
+                    </a>
+
+                    <!-- User Menu -->
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <a href="#" class="text-dark dropdown-toggle d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-4"></i>
+                                <span class="ms-2 d-none d-lg-inline fw-medium">{{ user.username|truncatechars:12 }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width: 200px;">
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'profile' %}">
+                                        <i class="bi bi-person-circle text-primary me-3"></i> Profile Saya
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="{% url 'pesanan' %}">
+                                        <i class="bi bi-bag-check text-warning me-3"></i> Pesanan Saya
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded hover-bg-light" href="#">
+                                        <i class="bi bi-heart text-danger me-3"></i> Favorit Saya
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 rounded text-danger fw-medium" href="{% url 'logout' %}">
+                                        <i class="bi bi-box-arrow-right me-3"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'login' %}" class="btn btn-outline-dark btn-sm rounded-pill px-3">Login</a>
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-sm rounded-pill px-3">Daftar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <!-- OFFCANVAS MOBILE -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold">IA Rent Fashion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body pt-4">
+                <ul class="navbar-nav mx-auto flex-column text-center gap-4">
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'beranda' %}">Beranda</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link fs-5 text-dark dropdown-toggle" data-bs-toggle="dropdown" href="#">Koleksi</a>
+                        <ul class="dropdown-menu w-100 text-center shadow">
+                            <li><a class="dropdown-item py-2" href="{% url 'jas' %}">Jas</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'dress' %}">Dress</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'aksesoris' %}">Aksesoris</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'kebaya' %}">Kebaya</a></li>
+                            <li><a class="dropdown-item py-2" href="{% url 'footwear' %}">Footwear</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'inspirasi' %}">Inspirasi</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'kontak' %}">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'tentang' %}">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link fs-5 text-dark" href="{% url 'review' %}">Review</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- MODAL KERANJANG -->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 shadow">
+          <div class="modal-header border-bottom-0">
+            <h5 class="modal-title fw-bold">Keranjang Belanja</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body p-4">
+            <div id="cart-content"></div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="fw-semibold">Total Items:</span>
+                <span class="fw-bold" id="cart-total-items">0 items</span>
+              </div>
+              <div class="d-grid gap-2">
+                <button class="btn btn-dark rounded-pill" onclick="continueShopping()">Lanjut Belanja</button>
+                <button class="btn btn-primary rounded-pill" onclick="sewa()">Sewa Sekarang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAIL PRODUK SECTION -->
+    <section class="py-5" style="margin-top: 100px">
+        <div class="container">
+            <!-- BREADCRUMB -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'koleksi' %}" class="text-decoration-none">Koleksi</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'jas' %}" class="text-decoration-none">{{ product.category.name }}</a></li>
+                    <li class="breadcrumb-item active">{{ product.name }}</li>
+                </ol>
+            </nav>
+
+            <!-- BACK BUTTON -->
+            <a href="{% url 'koleksi' %}" class="btn btn-outline-dark mb-4">
+                <i class="bi bi-arrow-left"></i> Kembali ke Koleksi
+            </a>
+
+            <!-- DETAIL PRODUK -->
+            <div class="row">
+                <!-- GAMBAR PRODUK -->
+                <div class="col-md-5 mb-4">
+                    <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.name }}" style="height: 500px; width: 100%; object-fit: cover">
+                </div>
+
+                <!-- INFO PRODUK -->
+                <div class="col-md-7">
+                    <h6 class="text-muted">{{ product.category.name }}</h6>
+                    <h1 class="fw-bold mb-3">{{ product.name }}</h1>
+
+                    <!-- RATING -->
+                    <div class="mb-3 d-flex align-items-center">
+                        <div class="rating-stars me-2">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= average_rating %}
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                {% else %}
+                                    <i class="bi bi-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="text-muted">({{ average_rating }} dari {{ reviews.count }} ulasan)</span>
+                    </div>
+
+                    <!-- HARGA -->
+                    <div class="mb-3">
+                        <span class="fs-3 fw-bold text-danger">Rp {{ product.price }}</span>
+                        <small class="text-muted">/hari</small>
+                    </div>
+
+                    <!-- STOCK INFO -->
+                    <div class="mb-3">
+                        {% if total_stock > 0 %}
+                            <span class="text-success small">
+                                <i class="bi bi-check-circle"></i> Stok tersedia (Total: {{ total_stock }} item)
+                            </span>
+                        {% else %}
+                            <span class="text-danger small">
+                                <i class="bi bi-x-circle"></i> Stok Habis
+                            </span>
+                        {% endif %}
+                    </div>
+                    <!-- DESKRIPSI -->
+                    <p class="lead mb-4">{{ product.description|default:"Deskripsi produk tidak tersedia." }}</p>
+
+                    <!-- PILIH UKURAN - VERSI BARU DENGAN STOK PER UKURAN -->
+                    <div id="sizeSelectionContainer" class="mb-4">
+                        <label class="fw-bold mb-2">Pilih Ukuran:</label>
+                        <div class="d-flex flex-wrap gap-2 size-selection">
+                            {% if product.productsizes.all %}
+                                <!-- JIKA ADA DATA PRODUCT SIZES (SISTEM BARU) -->
+                                {% for product_size in product.productsizes.all %}
+                                    <button type="button" 
+                                            class="btn size-btn {% if product_size.stock == 0 %}btn-outline-secondary disabled{% else %}btn-outline-dark{% endif %}" 
+                                            data-size="{{ product_size.size.name }}"
+                                            data-stock="{{ product_size.stock }}"
+                                            onclick="selectSize('{{ product_size.size.name }}')"
+                                            style="min-width: 80px; height: 70px;"
+                                            {% if product_size.stock == 0 %}disabled{% endif %}>
+                                        <div class="d-flex flex-column">
+                                            <strong>{{ product_size.size.name }}</strong>
+                                            {% if product_size.stock == 0 %}
+                                                <small class="text-danger">Habis</small>
+                                            {% else %}
+                                                <small class="text-muted">Stok: {{ product_size.stock }}</small>
+                                            {% endif %}
+                                        </div>
+                                    </button>
+                                {% endfor %}
+                            {% else %}
+                                <!-- FALLBACK: JIKA TIDAK ADA DATA PRODUCT SIZES (SISTEM LAMA) -->
+                                {% if 'Jas' in product.category.name or 'Kemeja' in product.category.name %}
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XS" onclick="selectSize('XS')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XS</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="S" onclick="selectSize('S')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>S</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="M" onclick="selectSize('M')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>M</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="L" onclick="selectSize('L')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>L</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XL" onclick="selectSize('XL')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XL</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XXL" onclick="selectSize('XXL')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XXL</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                
+                                <!-- UKURAN UNTUK DRESS/KEBAYA -->
+                                {% elif 'Dress' in product.category.name or 'Kebaya' in product.category.name %}
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XS" onclick="selectSize('XS')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XS</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="S" onclick="selectSize('S')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>S</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="M" onclick="selectSize('M')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>M</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="L" onclick="selectSize('L')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>L</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XL" onclick="selectSize('XL')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XL</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                
+                                <!-- UKURAN UNTUK FOOTWEAR/SEPATU -->
+                                {% elif 'Footwear' in product.category.name or 'Sepatu' in product.category.name %}
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="36" onclick="selectSize('36')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>36</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="37" onclick="selectSize('37')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>37</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="38" onclick="selectSize('38')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>38</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="39" onclick="selectSize('39')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>39</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="40" onclick="selectSize('40')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>40</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="41" onclick="selectSize('41')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>41</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="42" onclick="selectSize('42')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>42</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="43" onclick="selectSize('43')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>43</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="44" onclick="selectSize('44')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>44</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="45" onclick="selectSize('45')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>45</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                
+                                <!-- UKURAN UNTUK AKSESORIS -->
+                                {% elif 'Aksesoris' in product.category.name %}
+                                    <div class="alert alert-info py-2 mb-0 w-100">
+                                        <small><i class="bi bi-info-circle"></i> Tidak perlu memilih ukuran untuk produk aksesoris</small>
+                                    </div>
+                                    <input type="hidden" id="autoSizeInput" value="T/A">
+                                
+                                <!-- DEFAULT UKURAN -->
+                                {% else %}
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XS" onclick="selectSize('XS')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XS</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="S" onclick="selectSize('S')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>S</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="M" onclick="selectSize('M')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>M</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="L" onclick="selectSize('L')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>L</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XL" onclick="selectSize('XL')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XL</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark size-btn" data-size="XXL" onclick="selectSize('XXL')" style="min-width: 80px; height: 70px;">
+                                        <div class="d-flex flex-column">
+                                            <strong>XXL</strong>
+                                            <small class="text-muted">Stok: -</small>
+                                        </div>
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- HIDDEN INPUT UNTUK MENYIMPAN UKURAN TERPILIH -->
+                    <input type="hidden" id="selectedSizeInput" name="size" value="">
+
+                    <!-- JUMLAH -->
+                    <div class="mb-4">
+                        <label class="fw-bold mb-2">Jumlah:</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-dark" onclick="decreaseQuantity()">-</button>
+                            <input type="number" id="quantityInput" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control" style="width: 80px; text-align: center" onchange="updateQuantityFromInput()">
+                            <button class="btn btn-sm btn-outline-dark" onclick="increaseQuantity()">+</button>
+                            <span class="ms-3 fw-bold text-danger" id="total-price">Rp {{ product.price }}</span>
+                        </div>
+                    </div>
+
+                    <!-- TOMBOL AKSI -->
+                    <div class="d-grid gap-2 mb-4">
+                        <button class="btn btn-lg rounded-pill fw-bold btn-action" 
+                                style="background-color: #ea6262; border-color: #ea6262; color: white;" 
+                                onclick="sewaSekarang()"
+                                {% if product.stock == 0 %}disabled{% endif %}>
+                            <i class="bi bi-calendar-check"></i> Sewa Sekarang
+                        </button>
+                        <button class="btn btn-dark btn-lg rounded-pill btn-action" 
+                                onclick="addToCart()"
+                                {% if product.stock == 0 %}disabled{% endif %}>
+                            <i class="bi bi-cart-fill"></i> Tambah ke Keranjang
+                        </button>
+                    </div>
+
+                    <!-- INFO TAMBAHAN -->
+                    <hr>
+                    <h5 class="fw-bold mt-4 mb-3">Informasi Produk</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Bahan berkualitas premium</li>
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Tersedia dalam berbagai ukuran</li>
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Perawatan profesional sebelum pengiriman</li>
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Garansi kepuasan pelanggan 100%</li>
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Pengiriman cepat dan aman</li>
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Asuransi produk tersedia</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ULASAN PRODUK -->
+            <section class="mt-5 pt-5 border-top">
+                <h4 class="fw-bold mb-4">Ulasan Pelanggan</h4>
+                
+                <!-- Summary Rating -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm p-4 text-center">
+                            <h2 class="display-4 fw-bold mb-2 text-warning">{{ average_rating }}</h2>
+                            <div class="rating-stars mb-2 fs-5">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= average_rating %}
+                                        <i class="bi bi-star-fill text-warning"></i>
+                                    {% else %}
+                                        <i class="bi bi-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <p class="text-muted mb-0">Berdasarkan {{ reviews.count }} ulasan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Review -->
+                <div class="mt-5">
+                    <h4>Tulis Review</h4>
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'submit_review' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="product" value="{{ product.id }}">
+                            
+                            <div class="mb-3">
+                                <label>Rating:</label>
+                                <select name="rating" class="form-select" required>
+                                    <option value="5">5 - Sangat Puas</option>
+                                    <option value="4">4 - Puas</option>
+                                    <option value="3">3 - Biasa</option>
+                                    <option value="2">2 - Kurang</option>
+                                    <option value="1">1 - Tidak Puas</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <textarea name="comment" class="form-control" rows="4" placeholder="Tulis pengalamanmu..." required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Kirim Review</button>
+                        </form>
+                    {% else %}
+                        <p><a href="{% url 'login' %}?next={{ request.path }}">Login</a> untuk menulis review</p>
+                    {% endif %}
+                </div>
+
+                <!-- Daftar Ulasan -->
+                <div id="reviewsList" class="mt-4">
+                    {% if reviews %}
+                        {% for review in reviews %}
+                        <div class="card border-0 shadow-sm p-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="fw-bold mb-1">{{ review.user.username }}</h6>
+                                    <div class="rating-stars small">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= review.rating %}
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            {% else %}
+                                                <i class="bi bi-star text-warning"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <small class="text-muted">{{ review.created_at|date:"d M Y" }}</small>
+                            </div>
+                            <p class="mb-0">{{ review.comment }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-chat-square-text display-4 text-muted"></i>
+                            <p class="mt-3 text-muted">Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- PRODUK SERUPA -->
+            {% if related_products %}
+            <section class="mt-5 pt-5 border-top">
+                <h4 class="fw-bold mb-4">Produk Serupa</h4>
+                <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4">
+                    {% for related_product in related_products %}
+                    <div class="col">
+                        <a href="{% url 'product_detail' related_product.id %}" 
+                        class="text-decoration-none text-dark">
+                            <div class="card product-card h-100 shadow-sm hover-shadow border-0">
+                                {% if related_product.image %}
+                                    <img src="{{ related_product.image.url }}" 
+                                        class="card-img-top" 
+                                        alt="{{ related_product.name }}"
+                                        style="height: 220px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-light d-flex align-items-center justify-content-center" 
+                                        style="height: 220px;">
+                                        <small class="text-muted">No Image</small>
+                                    </div>
+                                {% endif %}
+
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title mb-2">{{ related_product.name }}</h6>
+                                    <p class="text-primary fw-bold mb-1">Rp {{ related_product.price|floatformat:0 }} /hari</p>
+                                    
+                                    {% if related_product.stock > 0 %}
+                                        <small class="text-success">
+                                            <i class="bi bi-check-circle"></i> Tersedia ({{ related_product.stock }})
+                                        </small>
+                                    {% else %}
+                                        <small class="text-danger">
+                                            <i class="bi bi-x-circle"></i> Stok Habis
+                                        </small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="card-footer bg-white border-0 pt-0">
+                                    <span class="btn btn-outline-dark btn-sm w-100">
+                                        Lihat Detail
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer" class="bg-white border-top mt-5">
+        <div class="container py-5">
+            <div class="row gy-4">
+                <div class="col-lg-3 col-sm-6">
+                    <img src="{% static 'images/main-logo.png' %}" alt="logo" class="img-fluid mb-3" style="max-width: 200px">
+                    <p class="text-muted">
+                        Jl. Brigjend H. Hasan Basri, Pangeran, Kec. Banjarmasin Utara,<br>
+                        Kota Banjarmasin, Kalimantan Selatan 70123
+                    </p>
+                    <ul class="d-flex list-unstyled gap-3 mt-3">
+                        <li><a href="#" class="text-dark"><i class="bi bi-facebook fs-5"></i></a></li>
+                        <li><a href="#" class="text-dark"><i class="bi bi-instagram fs-5"></i></a></li>
+                        <li><a href="#" class="text-dark"><i class="bi bi-youtube fs-5"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'beranda' %}" class="text-dark text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="{% url 'koleksi' %}" class="text-dark text-decoration-none">Koleksi</a></li>
+                        <li class="mb-2"><a href="{% url 'inspirasi' %}" class="text-dark text-decoration-none">Inspirasi</a></li>
+                        <li class="mb-2"><a href="{% url 'kontak' %}" class="text-dark text-decoration-none">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <h5 class="fw-bold mb-3">Help & Info</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Cek Pesanan</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Kebijakan Pengembalian</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">Hubungi Kami</a></li>
+                        <li class="mb-2"><a href="#" class="text-dark text-decoration-none">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <h5 class="fw-bold mb-3">Contact Us</h5>
+                    <p class="text-muted">
+                        Ada pertanyaan atau saran? <br>
+                        <a href="mailto:iarentfashion@gmail.com" class="text-dark text-decoration-underline">iarentfashion@gmail.com</a>
+                    </p>
+                    <p class="text-muted">
+                        Butuh bantuan cepat? Hubungi kami: <br>
+                        <a href="https://wa.me/6281122233344" class="text-dark text-decoration-underline">+62 811-2223-3344</a>
+                    </p>
+                </div>
+            </div>
+            <div class="border-top mt-4 pt-3 d-flex justify-content-between align-items-center flex-wrap">
+                <p class="mb-0 small text-secondary">© 2025 IA Rent Fashion. All Rights Reserved.</p>
+                <div class="d-flex gap-3 mt-2 mt-md-0">
+                    <a href="#" class="text-secondary text-decoration-none small">Privacy Policy</a>
+                    <a href="#" class="text-secondary text-decoration-none small">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <body data-user-logged-in="{{ user.is_authenticated|yesno:'true,false' }}">
+
+
+    <!-- URUTAN SCRIPT YANG BENAR -->
+    
+    <!-- 1. Bootstrap Bundle (wajib pertama untuk modal, dropdown, dll) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 2. SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- 3. Data Global Django -->
+    <script>
+        window.djangoData = {
+            isLoggedIn: {{ user.is_authenticated|yesno:"true,false" }},
+            csrfToken: "{{ csrf_token }}",
+            urls: {
+                login: "{% url 'login' %}",
+                sewa: "{% url 'sewa' %}"
+            }
+        };
+    </script>
+
+    <!-- 4. Data Produk dalam JSON - FIXED VERSION -->
+    <script id="product-data" type="application/json">
+    {
+        "id": {{ product.id }},
+        "name": "{{ product.name|escapejs }}",
+        "price": {{ product.price }},
+        "stock": {{ total_stock }},
+        "category": "{{ product.category.name|escapejs }}",
+        "description": "{{ product.description|escapejs }}",
+        "available_sizes": [
+            {% for size in available_sizes %}
+            {
+                "size": "{{ size.size.name|escapejs }}",
+                "stock": {{ size.stock }}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
+
+    </script>
+
+    <!-- 5. App.js (untuk header & cart global) -->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <!-- 6. Detail.js (untuk halaman detail produk) -->
+    <script src="{% static 'js/detail.js' %}"></script>
+
+    
+
+</body>
+</html>
