@@ -47,7 +47,7 @@ else:
 
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '.railway.app,localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'iarent.up.railway.app,localhost,127.0.0.1').split(',')
 
 
 
